@@ -30,6 +30,7 @@
             --white: #ffffff;
             --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             --transition: all 0.3s ease;
+            --welcome-color: #E6E6FA;
         }
 
         * {
@@ -97,11 +98,12 @@
             justify-content: space-between;
             margin-bottom: 20px;
             padding-bottom: 10px;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
             position: sticky;
             top: 0;
             background-color: var(--background-color);
-            z-index: 10;
+            z-index: 100;
+            padding: 15px 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
         .header h1 {
@@ -165,6 +167,14 @@
             color: white;
         }
 
+        .btn-danger {
+            background-color: #e74c3c;
+        }
+
+        .btn-danger:hover {
+            background-color: #c0392b;
+        }
+
         .btn-icon {
             margin-right: 8px;
         }
@@ -176,6 +186,10 @@
             margin-bottom: 20px;
             box-shadow: var(--shadow);
             transition: var(--transition);
+        }
+        
+        .welcome-card {
+            background-color: var(--welcome-color);
         }
 
         .card:hover {
@@ -661,6 +675,13 @@
             width: 0%;
             transition: width 0.3s ease;
         }
+        
+        /* Content area with fixed header */
+        .screen-content {
+            padding-top: 70px;
+            height: calc(100% - 70px);
+            overflow-y: auto;
+        }
     </style>
 </head>
 <body>
@@ -696,165 +717,167 @@
                 </div>
             </div>
             
-            <div class="card">
-                <h2 class="card-title">Cadastro da Gestante</h2>
-                <p>Preencha seus dados para começar a usar o aplicativo</p>
-                
-                <form id="registrationForm">
-                    <div class="form-group">
-                        <label for="fullName">Nome Completo</label>
-                        <input type="text" id="fullName" class="form-control" required>
-                        <div class="invalid-feedback">Por favor, insira seu nome completo</div>
-                    </div>
+            <div class="screen-content">
+                <div class="card">
+                    <h2 class="card-title">Cadastro da Gestante</h2>
+                    <p>Preencha seus dados para começar a usar o aplicativo</p>
                     
-                    <div class="form-group">
-                        <label for="birthDate">Data de Nascimento</label>
-                        <input type="date" id="birthDate" class="form-control" required>
-                        <div class="invalid-feedback">Por favor, insira sua data de nascimento</div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="cpf">CPF</label>
-                        <input type="text" id="cpf" class="form-control" required>
-                        <div class="invalid-feedback">Por favor, insira um CPF válido</div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="susCard">Cartão SUS</label>
-                        <input type="text" id="susCard" class="form-control" required>
-                        <div class="invalid-feedback">Por favor, insira o número do cartão SUS</div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="email" id="email" class="form-control" required>
-                        <div class="invalid-feedback">Por favor, insira um email válido</div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="occupation">Ocupação</label>
-                        <input type="text" id="occupation" class="form-control" required>
-                        <div class="invalid-feedback">Por favor, insira sua ocupação</div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="address">Endereço</label>
-                        <input type="text" id="address" class="form-control" required>
-                        <div class="invalid-feedback">Por favor, insira seu endereço</div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="emergencyPhone">Telefone de Emergência</label>
-                        <input type="tel" id="emergencyPhone" class="form-control" required>
-                        <div class="invalid-feedback">Por favor, insira um telefone válido</div>
-                    </div>
-                    
-                    <button type="submit" class="btn">
-                        <i class="material-icons btn-icon">how_to_reg</i>
-                        Cadastrar
-                    </button>
-                </form>
+                    <form id="registrationForm">
+                        <div class="form-group">
+                            <label for="fullName">Nome Completo</label>
+                            <input type="text" id="fullName" class="form-control" required>
+                            <div class="invalid-feedback">Por favor, insira seu nome completo</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="birthDate">Data de Nascimento</label>
+                            <input type="date" id="birthDate" class="form-control" required>
+                            <div class="invalid-feedback">Por favor, insira sua data de nascimento</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="cpf">CPF</label>
+                            <input type="text" id="cpf" class="form-control" required>
+                            <div class="invalid-feedback">Por favor, insira um CPF válido</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="susCard">Cartão SUS</label>
+                            <input type="text" id="susCard" class="form-control" required>
+                            <div class="invalid-feedback">Por favor, insira o número do cartão SUS</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" class="form-control" required>
+                            <div class="invalid-feedback">Por favor, insira um email válido</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="occupation">Ocupação</label>
+                            <input type="text" id="occupation" class="form-control" required>
+                            <div class="invalid-feedback">Por favor, insira sua ocupação</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="address">Endereço</label>
+                            <input type="text" id="address" class="form-control" required>
+                            <div class="invalid-feedback">Por favor, insira seu endereço</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="emergencyPhone">Telefone de Emergência</label>
+                            <input type="tel" id="emergencyPhone" class="form-control" required>
+                            <div class="invalid-feedback">Por favor, insira um telefone válido</div>
+                        </div>
+                        
+                        <button type="submit" class="btn">
+                            <i class="material-icons btn-icon">how_to_reg</i>
+                            Cadastrar
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
 
         <!-- Tela 2: Menu Principal -->
         <div id="screen2" class="screen">
             <div class="header">
+                <button class="back-btn" onclick="showScreen('screen1')">
+                    <i class="material-icons">arrow_back</i>
+                </button>
                 <h1>Menu Principal</h1>
             </div>
             
-            <div class="card">
-                <div id="userGreeting">
-                    <h2 class="card-title">Olá, <span id="userName"></span>!</h2>
-                    <p>Seja bem-vinda ao seu acompanhamento gestacional</p>
+            <div class="screen-content">
+                <div class="card welcome-card">
+                    <div id="userGreeting">
+                        <h2 class="card-title">Olá, <span id="userName"></span>!</h2>
+                        <p>Seja bem-vinda ao seu acompanhamento gestacional</p>
+                    </div>
                 </div>
-            </div>
-            
-            <div class="grid">
-                <a href="#" class="menu-item" onclick="showScreen('screen3')">
-                    <i class="material-icons">person</i>
-                    <span>Dados da Gestante</span>
-                </a>
                 
-                <a href="#" class="menu-item" onclick="showScreen('screen4')">
-                    <i class="material-icons">phone</i>
-                    <span>Telefones Úteis</span>
-                </a>
-                
-                <a href="#" class="menu-item" onclick="showScreen('screen5')">
-                    <i class="material-icons">calendar_today</i>
-                    <span>Agendamentos <span class="badge">Beta</span></span>
-                </a>
-                
-                <a href="#" class="menu-item" onclick="showScreen('screen6')">
-                    <i class="material-icons">gavel</i>
-                    <span>Conheça Seus Direitos</span>
-                </a>
-                
-                <a href="#" class="menu-item" onclick="showScreen('screen7')">
-                    <i class="material-icons">people</i>
-                    <span>Pré-natal do Parceiro</span>
-                </a>
-                
-                <a href="#" class="menu-item" onclick="showScreen('screen8')">
-                    <i class="material-icons">monitor_weight</i>
-                    <span>Monitoramento de Peso</span>
-                </a>
-                
-                <a href="#" class="menu-item" onclick="showScreen('screen9')">
-                    <i class="material-icons">medical_services</i>
-                    <span>Consulta Odontológica</span>
-                </a>
-                
-                <a href="#" class="menu-item" onclick="showScreen('screen10')">
-                    <i class="material-icons">pregnant_woman</i>
-                    <span>Consulta da Gestante</span>
-                </a>
-                
-                <a href="#" class="menu-item" onclick="showScreen('screen11')">
-                    <i class="material-icons">vaccines</i>
-                    <span>Cartão de Vacina</span>
-                </a>
-                
-                <a href="#" class="menu-item" onclick="showScreen('screen12')">
-                    <i class="material-icons">science</i>
-                    <span>Exames Laboratoriais</span>
-                </a>
-                
-                <a href="#" class="menu-item" onclick="showScreen('screen13')">
-                    <i class="material-icons">image</i>
-                    <span>Exames de Imagem</span>
-                </a>
-                
-                <a href="#" class="menu-item" onclick="showScreen('screen14')">
-                    <i class="material-icons">medication</i>
-                    <span>Suplementação</span>
-                </a>
-                
-                <a href="#" class="menu-item" onclick="showScreen('screen15')">
-                    <i class="material-icons">notifications</i>
-                    <span>Lembretes</span>
-                </a>
-                
-                <a href="#" class="menu-item" onclick="showScreen('screen16')">
-                    <i class="material-icons">timer</i>
-                    <span>Trabalho de Parto</span>
-                </a>
-                
-                <a href="#" class="menu-item" onclick="showScreen('screen17')">
-                    <i class="material-icons">child_care</i>
-                    <span>Parto</span>
-                </a>
-                
-                <a href="#" class="menu-item" onclick="showScreen('screen18')">
-                    <i class="material-icons">menu_book</i>
-                    <span>Orientações Gerais</span>
-                </a>
-                
-                <a href="#" class="menu-item" onclick="showScreen('screen19')">
-                    <i class="material-icons">edit</i>
-                    <span>Diário da Gestante</span>
-                </a>
+                <div class="grid">
+                    <a href="#" class="menu-item" onclick="showScreen('screen3')">
+                        <i class="material-icons">person</i>
+                        <span>Dados da Gestante</span>
+                    </a>
+                    
+                    <a href="#" class="menu-item" onclick="showScreen('screen4')">
+                        <i class="material-icons">phone</i>
+                        <span>Telefones Úteis</span>
+                    </a>
+                    
+                    <a href="#" class="menu-item" onclick="showScreen('screen5')">
+                        <i class="material-icons">calendar_today</i>
+                        <span>Agendamentos <span class="badge">Beta</span></span>
+                    </a>
+                    
+                    <a href="#" class="menu-item" onclick="showScreen('screen6')">
+                        <i class="material-icons">gavel</i>
+                        <span>Conheça Seus Direitos</span>
+                    </a>
+                    
+                    <a href="#" class="menu-item" onclick="showScreen('screen8')">
+                        <i class="material-icons">monitor_weight</i>
+                        <span>Monitoramento de Peso</span>
+                    </a>
+                    
+                    <a href="#" class="menu-item" onclick="showScreen('screen9')">
+                        <i class="material-icons">medical_services</i>
+                        <span>Consulta Odontológica <span class="badge">Beta</span></span>
+                    </a>
+                    
+                    <a href="#" class="menu-item" onclick="showScreen('screen10')">
+                        <i class="material-icons">pregnant_woman</i>
+                        <span>Consulta da Gestante</span>
+                    </a>
+                    
+                    <a href="#" class="menu-item" onclick="showScreen('screen11')">
+                        <i class="material-icons">vaccines</i>
+                        <span>Cartão de Vacina</span>
+                    </a>
+                    
+                    <a href="#" class="menu-item" onclick="showScreen('screen12')">
+                        <i class="material-icons">science</i>
+                        <span>Exames Laboratoriais</span>
+                    </a>
+                    
+                    <a href="#" class="menu-item" onclick="showScreen('screen13')">
+                        <i class="material-icons">image</i>
+                        <span>Exames de Imagem</span>
+                    </a>
+                    
+                    <a href="#" class="menu-item" onclick="showScreen('screen14')">
+                        <i class="material-icons">medication</i>
+                        <span>Suplementação</span>
+                    </a>
+                    
+                    <a href="#" class="menu-item" onclick="showScreen('screen15')">
+                        <i class="material-icons">notifications</i>
+                        <span>Lembretes <span class="badge">Beta</span></span>
+                    </a>
+                    
+                    <a href="#" class="menu-item" onclick="showScreen('screen16')">
+                        <i class="material-icons">timer</i>
+                        <span>Trabalho de Parto</span>
+                    </a>
+                    
+                    <a href="#" class="menu-item" onclick="showScreen('screen17')">
+                        <i class="material-icons">child_care</i>
+                        <span>Parto</span>
+                    </a>
+                    
+                    <a href="#" class="menu-item" onclick="showScreen('screen18')">
+                        <i class="material-icons">menu_book</i>
+                        <span>Orientações Gerais</span>
+                    </a>
+                    
+                    <a href="#" class="menu-item" onclick="showScreen('screen19')">
+                        <i class="material-icons">edit</i>
+                        <span>Diário da Gestante</span>
+                    </a>
+                </div>
             </div>
         </div>
 
@@ -867,88 +890,96 @@
                 <h1>Dados da Gestante</h1>
             </div>
             
-            <div class="card">
-                <form id="gestanteForm">
-                    <div class="form-group">
-                        <label>Nome</label>
-                        <p id="displayName" class="form-control" style="background-color: #f5f5f5;"></p>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="partnerName">Nome do Companheiro (Opcional)</label>
-                        <input type="text" id="partnerName" class="form-control">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>Data de Nascimento</label>
-                        <p id="displayBirthDate" class="form-control" style="background-color: #f5f5f5;"></p>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>Idade</label>
-                        <p id="displayAge" class="form-control" style="background-color: #f5f5f5;"></p>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>Raça/Cor</label>
-                        <div class="radio-group">
-                            <label class="radio-option">
-                                <input type="radio" name="race" value="Branca"> Branca
-                            </label>
-                            <label class="radio-option">
-                                <input type="radio" name="race" value="Preta"> Preta
-                            </label>
-                            <label class="radio-option">
-                                <input type="radio" name="race" value="Amarela"> Amarela
-                            </label>
-                            <label class="radio-option">
-                                <input type="radio" name="race" value="Parda"> Parda
-                            </label>
-                            <label class="radio-option">
-                                <input type="radio" name="race" value="Indígena"> Indígena
-                            </label>
+            <div class="screen-content">
+                <div class="card">
+                    <form id="gestanteForm">
+                        <div class="form-group">
+                            <label for="displayName">Nome</label>
+                            <input type="text" id="displayName" class="form-control" readonly>
                         </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>Trabalha fora de casa?</label>
-                        <div class="radio-group">
-                            <label class="radio-option">
-                                <input type="radio" name="worksOutside" value="Sim"> Sim
-                            </label>
-                            <label class="radio-option">
-                                <input type="radio" name="worksOutside" value="Não"> Não
-                            </label>
+                        
+                        <div class="form-group">
+                            <label for="partnerName">Nome do Companheiro (Opcional)</label>
+                            <input type="text" id="partnerName" class="form-control">
                         </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>Ocupação</label>
-                        <p id="displayOccupation" class="form-control" style="background-color: #f5f5f5;"></p>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>Endereço</label>
-                        <p id="displayAddress" class="form-control" style="background-color: #f5f5f5;"></p>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>Nº Cartão do SUS</label>
-                        <p id="displaySusCard" class="form-control" style="background-color: #f5f5f5;"></p>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="nisCard">Nº Cartão do NIS</label>
-                        <input type="text" id="nisCard" class="form-control">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>Telefone de Emergência</label>
-                        <p id="displayEmergencyPhone" class="form-control" style="background-color: #f5f5f5;"></p>
-                    </div>
-                    
-                    <button type="submit" class="btn">Salvar Alterações</button>
-                </form>
+                        
+                        <div class="form-group">
+                            <label for="displayBirthDate">Data de Nascimento</label>
+                            <input type="text" id="displayBirthDate" class="form-control" readonly>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="displayAge">Idade</label>
+                            <input type="text" id="displayAge" class="form-control" readonly>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Raça/Cor</label>
+                            <div class="radio-group">
+                                <label class="radio-option">
+                                    <input type="radio" name="race" value="Branca"> Branca
+                                </label>
+                                <label class="radio-option">
+                                    <input type="radio" name="race" value="Preta"> Preta
+                                </label>
+                                <label class="radio-option">
+                                    <input type="radio" name="race" value="Amarela"> Amarela
+                                </label>
+                                <label class="radio-option">
+                                    <input type="radio" name="race" value="Parda"> Parda
+                                </label>
+                                <label class="radio-option">
+                                    <input type="radio" name="race" value="Indígena"> Indígena
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Trabalha fora de casa?</label>
+                            <div class="radio-group">
+                                <label class="radio-option">
+                                    <input type="radio" name="worksOutside" value="Sim"> Sim
+                                </label>
+                                <label class="radio-option">
+                                    <input type="radio" name="worksOutside" value="Não"> Não
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="displayOccupation">Ocupação</label>
+                            <input type="text" id="displayOccupation" class="form-control" readonly>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="displayAddress">Endereço</label>
+                            <input type="text" id="displayAddress" class="form-control" readonly>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="displaySusCard">Nº Cartão do SUS</label>
+                            <input type="text" id="displaySusCard" class="form-control" readonly>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="nisCard">Nº Cartão do NIS</label>
+                            <input type="text" id="nisCard" class="form-control">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="displayEmergencyPhone">Telefone de Emergência</label>
+                            <input type="text" id="displayEmergencyPhone" class="form-control" readonly>
+                        </div>
+                        
+                        <div style="display: flex; gap: 10px; margin-top: 20px;">
+                            <button type="submit" class="btn">Salvar Alterações</button>
+                            <button type="button" class="btn btn-danger" onclick="deleteAllData()">
+                                <i class="material-icons btn-icon">delete</i>
+                                Apagar Dados
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
 
@@ -961,60 +992,62 @@
                 <h1>Telefones Úteis</h1>
             </div>
             
-            <div class="card">
-                <div class="emergency-number" onclick="callNumber('192')">
-                    <i class="material-icons">local_hospital</i>
-                    <div class="emergency-info">
-                        <h3>SAMU</h3>
-                        <p>192</p>
+            <div class="screen-content">
+                <div class="card">
+                    <div class="emergency-number" onclick="callNumber('192')">
+                        <i class="material-icons">local_hospital</i>
+                        <div class="emergency-info">
+                            <h3>SAMU</h3>
+                            <p>192</p>
+                        </div>
                     </div>
-                </div>
-                
-                <div class="emergency-number" onclick="callNumber('136')">
-                    <i class="material-icons">hearing</i>
-                    <div class="emergency-info">
-                        <h3>Ouvidoria Geral do SUS</h3>
-                        <p>136</p>
+                    
+                    <div class="emergency-number" onclick="callNumber('136')">
+                        <i class="material-icons">hearing</i>
+                        <div class="emergency-info">
+                            <h3>Ouvidoria Geral do SUS</h3>
+                            <p>136</p>
+                        </div>
                     </div>
-                </div>
-                
-                <div class="emergency-number" onclick="callNumber('190')">
-                    <i class="material-icons">security</i>
-                    <div class="emergency-info">
-                        <h3>Polícia Militar</h3>
-                        <p>190</p>
+                    
+                    <div class="emergency-number" onclick="callNumber('190')">
+                        <i class="material-icons">security</i>
+                        <div class="emergency-info">
+                            <h3>Polícia Militar</h3>
+                            <p>190</p>
+                        </div>
                     </div>
-                </div>
-                
-                <div class="emergency-number" onclick="callNumber('180')">
-                    <i class="material-icons">woman</i>
-                    <div class="emergency-info">
-                        <h3>Central de Atendimento à Mulher</h3>
-                        <p>180</p>
+                    
+                    <div class="emergency-number" onclick="callNumber('180')">
+                        <i class="material-icons">woman</i>
+                        <div class="emergency-info">
+                            <h3>Central de Atendimento à Mulher</h3>
+                            <p>180</p>
+                        </div>
                     </div>
-                </div>
-                
-                <div class="emergency-number" onclick="callNumber('193')">
-                    <i class="material-icons">fire_truck</i>
-                    <div class="emergency-info">
-                        <h3>Corpo de Bombeiros</h3>
-                        <p>193</p>
+                    
+                    <div class="emergency-number" onclick="callNumber('193')">
+                        <i class="material-icons">fire_truck</i>
+                        <div class="emergency-info">
+                            <h3>Corpo de Bombeiros</h3>
+                            <p>193</p>
+                        </div>
                     </div>
-                </div>
-                
-                <div class="emergency-number" onclick="callNumber('100')">
-                    <i class="material-icons">child_friendly</i>
-                    <div class="emergency-info">
-                        <h3>Disque Denúncia Nacional</h3>
-                        <p>100</p>
+                    
+                    <div class="emergency-number" onclick="callNumber('100')">
+                        <i class="material-icons">child_friendly</i>
+                        <div class="emergency-info">
+                            <h3>Disque Denúncia Nacional</h3>
+                            <p>100</p>
+                        </div>
                     </div>
-                </div>
-                
-                <div class="emergency-number" onclick="callNumber('0800611997')">
-                    <i class="material-icons">smoke_free</i>
-                    <div class="emergency-info">
-                        <h3>Disque Parar de Fumar</h3>
-                        <p>0800 611 997</p>
+                    
+                    <div class="emergency-number" onclick="callNumber('0800611997')">
+                        <i class="material-icons">smoke_free</i>
+                        <div class="emergency-info">
+                            <h3>Disque Parar de Fumar</h3>
+                            <p>0800 611 997</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1029,35 +1062,37 @@
                 <h1>Agendamento de Consultas <span class="badge">Beta</span></h1>
             </div>
             
-            <div class="card">
-                <form id="appointmentForm">
-                    <div class="form-group">
-                        <label for="appointmentDate">Data</label>
-                        <input type="date" id="appointmentDate" class="form-control" required>
-                    </div>
+            <div class="screen-content">
+                <div class="card">
+                    <form id="appointmentForm">
+                        <div class="form-group">
+                            <label for="appointmentDate">Data</label>
+                            <input type="date" id="appointmentDate" class="form-control" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="appointmentTime">Horário</label>
+                            <input type="time" id="appointmentTime" class="form-control" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="professional">Profissional</label>
+                            <select id="professional" class="form-control" required>
+                                <option value="">Selecione...</option>
+                                <option value="Obstetra">Obstetra</option>
+                                <option value="Enfermeira">Enfermeira</option>
+                                <option value="Dentista">Dentista</option>
+                                <option value="Nutricionista">Nutricionista</option>
+                            </select>
+                        </div>
+                        
+                        <button type="submit" class="btn">Agendar Consulta</button>
+                    </form>
                     
-                    <div class="form-group">
-                        <label for="appointmentTime">Horário</label>
-                        <input type="time" id="appointmentTime" class="form-control" required>
+                    <h3 class="card-title" style="margin-top: 30px;">Consultas Agendadas</h3>
+                    <div id="appointmentsList" class="list-group">
+                        <!-- Consultas serão adicionadas dinamicamente aqui -->
                     </div>
-                    
-                    <div class="form-group">
-                        <label for="professional">Profissional</label>
-                        <select id="professional" class="form-control" required>
-                            <option value="">Selecione...</option>
-                            <option value="Obstetra">Obstetra</option>
-                            <option value="Enfermeira">Enfermeira</option>
-                            <option value="Dentista">Dentista</option>
-                            <option value="Nutricionista">Nutricionista</option>
-                        </select>
-                    </div>
-                    
-                    <button type="submit" class="btn">Agendar Consulta</button>
-                </form>
-                
-                <h3 class="card-title" style="margin-top: 30px;">Consultas Agendadas</h3>
-                <div id="appointmentsList" class="list-group">
-                    <!-- Consultas serão adicionadas dinamicamente aqui -->
                 </div>
             </div>
         </div>
@@ -1071,19 +1106,21 @@
                 <h1>Conheça Seus Direitos</h1>
             </div>
             
-            <div class="card">
-                <h3 class="card-title">Direitos da Gestante</h3>
-                <p>Como gestante, você tem direitos garantidos por lei que visam seu bem-estar e saúde durante a gravidez:</p>
-                
-                <ul style="margin: 15px 0; padding-left: 20px;">
-                    <li>Atendimento prioritário em filas e serviços públicos</li>
-                    <li>Isenção de custos em exames e consultas pelo SUS</li>
-                    <li>Licença-maternidade de 120 dias (podendo ser estendida)</li>
-                    <li>Estabilidade no emprego desde a confirmação da gravidez até 5 meses após o parto</li>
-                    <li>Direito a acompanhante durante o trabalho de parto, parto e pós-parto</li>
-                    <li>Direito a amamentar no trabalho até o bebê completar 6 meses</li>
-                    <li>Atendimento humanizado e respeito às suas escolhas</li>
-                </ul>
+            <div class="screen-content">
+                <div class="card">
+                    <h3 class="card-title">Direitos da Gestante</h3>
+                    <p>Como gestante, você tem direitos garantidos por lei que visam seu bem-estar e saúde durante a gravidez:</p>
+                    
+                    <ul style="margin: 15px 0; padding-left: 20px;">
+                        <li>Atendimento prioritário em filas e serviços públicos</li>
+                        <li>Isenção de custos em exames e consultas pelo SUS</li>
+                        <li>Licença-maternidade de 120 dias (podendo ser estendida)</li>
+                        <li>Estabilidade no emprego desde a confirmação da gravidez até 5 meses após o parto</li>
+                        <li>Direito a acompanhante durante o trabalho de parto, parto e pós-parto</li>
+                        <li>Direito a amamentar no trabalho até o bebê completar 6 meses</li>
+                        <li>Atendimento humanizado e respeito às suas escolhas</li>
+                    </ul>
+                </div>
             </div>
         </div>
 
@@ -1096,28 +1133,30 @@
                 <h1>Monitoramento de Peso</h1>
             </div>
             
-            <div class="card">
-                <form id="weightForm">
-                    <div class="form-group">
-                        <label for="weightDate">Data</label>
-                        <input type="date" id="weightDate" class="form-control" required>
-                    </div>
+            <div class="screen-content">
+                <div class="card">
+                    <form id="weightForm">
+                        <div class="form-group">
+                            <label for="weightDate">Data</label>
+                            <input type="date" id="weightDate" class="form-control" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="currentWeight">Peso (kg)</label>
+                            <input type="number" id="currentWeight" class="form-control" step="0.1" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="currentHeight">Altura (m)</label>
+                            <input type="number" id="currentHeight" class="form-control" step="0.01" required>
+                        </div>
+                        
+                        <button type="submit" class="btn">Registrar Medidas</button>
+                    </form>
                     
-                    <div class="form-group">
-                        <label for="currentWeight">Peso (kg)</label>
-                        <input type="number" id="currentWeight" class="form-control" step="0.1" required>
+                    <div class="chart-container">
+                        <canvas id="weightChart"></canvas>
                     </div>
-                    
-                    <div class="form-group">
-                        <label for="currentHeight">Altura (m)</label>
-                        <input type="number" id="currentHeight" class="form-control" step="0.01" required>
-                    </div>
-                    
-                    <button type="submit" class="btn">Registrar Medidas</button>
-                </form>
-                
-                <div class="chart-container">
-                    <canvas id="weightChart"></canvas>
                 </div>
             </div>
         </div>
@@ -1131,50 +1170,52 @@
                 <h1>Consulta da Gestante</h1>
             </div>
             
-            <div class="card">
-                <form id="pregnancyForm">
-                    <div class="form-group">
-                        <label for="consultDate">Data</label>
-                        <input type="date" id="consultDate" class="form-control" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="gestationalAge">Idade Gestacional (semanas)</label>
-                        <input type="number" id="gestationalAge" class="form-control" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="uterineHeight">Altura Uterina (cm)</label>
-                        <input type="number" id="uterineHeight" class="form-control" step="0.1">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="fetalHeartbeat">Batimento Cardíaco Fetal (BCF)</label>
-                        <input type="number" id="fetalHeartbeat" class="form-control">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="fetalMovement">Movimentação Fetal</label>
-                        <select id="fetalMovement" class="form-control">
-                            <option value="Normal">Normal</option>
-                            <option value="Aumentada">Aumentada</option>
-                            <option value="Diminuída">Diminuída</option>
-                            <option value="Ausente">Ausente</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="consultNotes">Anotações</label>
-                        <textarea id="consultNotes" class="form-control" rows="3"></textarea>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="consultGuidance">Orientações</label>
-                        <textarea id="consultGuidance" class="form-control" rows="3"></textarea>
-                    </div>
-                    
-                    <button type="submit" class="btn">Salvar Consulta</button>
-                </form>
+            <div class="screen-content">
+                <div class="card">
+                    <form id="pregnancyForm">
+                        <div class="form-group">
+                            <label for="consultDate">Data</label>
+                            <input type="date" id="consultDate" class="form-control" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="gestationalAge">Idade Gestacional (semanas)</label>
+                            <input type="number" id="gestationalAge" class="form-control" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="uterineHeight">Altura Uterina (cm)</label>
+                            <input type="number" id="uterineHeight" class="form-control" step="0.1">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="fetalHeartbeat">Batimento Cardíaco Fetal (BCF)</label>
+                            <input type="number" id="fetalHeartbeat" class="form-control">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="fetalMovement">Movimentação Fetal</label>
+                            <select id="fetalMovement" class="form-control">
+                                <option value="Normal">Normal</option>
+                                <option value="Aumentada">Aumentada</option>
+                                <option value="Diminuída">Diminuída</option>
+                                <option value="Ausente">Ausente</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="consultNotes">Anotações</label>
+                            <textarea id="consultNotes" class="form-control" rows="3"></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="consultGuidance">Orientações</label>
+                            <textarea id="consultGuidance" class="form-control" rows="3"></textarea>
+                        </div>
+                        
+                        <button type="submit" class="btn">Salvar Consulta</button>
+                    </form>
+                </div>
             </div>
         </div>
 
@@ -1187,74 +1228,76 @@
                 <h1>Cartão de Vacina</h1>
             </div>
             
-            <div class="card">
-                <div class="tabs">
-                    <div class="tab active" onclick="changeVaccineTab('gestante')">Gestante</div>
-                    <div class="tab" onclick="changeVaccineTab('bebe')">Bebê</div>
-                </div>
-                
-                <div id="gestanteVaccines" class="tab-content active">
-                    <form id="vaccineForm">
-                        <input type="hidden" id="vaccineType" value="gestante">
-                        
-                        <div class="form-group">
-                            <label for="vaccineName">Vacina</label>
-                            <select id="vaccineName" class="form-control" required>
-                                <option value="">Selecione...</option>
-                                <option value="Hepatite B">Hepatite B</option>
-                                <option value="Dupla Adulto (dT)">Dupla Adulto (dT)</option>
-                                <option value="Influenza (Gripe)">Influenza (Gripe)</option>
-                                <option value="Febre Amarela">Febre Amarela</option>
-                                <option value="Tríplice Viral">Tríplice Viral</option>
-                                <option value="Hepatite A">Hepatite A</option>
-                                <option value="Pneumocócica 23-valente">Pneumocócica 23-valente</option>
-                            </select>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="vaccineDate">Data de Aplicação</label>
-                            <input type="date" id="vaccineDate" class="form-control" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="vaccineDose">Dose</label>
-                            <input type="text" id="vaccineDose" class="form-control" required>
-                        </div>
-                        
-                        <button type="submit" class="btn">Registrar Vacina</button>
-                    </form>
-                </div>
-                
-                <div id="bebeVaccines" class="tab-content">
-                    <form id="babyVaccineForm">
-                        <input type="hidden" id="babyVaccineType" value="bebe">
-                        
-                        <div class="form-group">
-                            <label for="babyVaccineName">Vacina</label>
-                            <select id="babyVaccineName" class="form-control" required>
-                                <option value="">Selecione...</option>
-                                <option value="BCG">BCG (contra formas graves de tuberculose)</option>
-                                <option value="Hepatite B">Hepatite B</option>
-                                <option value="Penta/DTP">Penta/DTP (difteria, tétano, coqueluche, hepatite B e Hib)</option>
-                                <option value="VIP/VOP">VIP/VOP (poliomielite)</option>
-                                <option value="Pneumocócica 10-valente">Pneumocócica 10-valente</option>
-                                <option value="Rotavírus">Rotavírus</option>
-                                <option value="Meningocócica C">Meningocócica C</option>
-                            </select>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="babyVaccineDate">Data de Aplicação</label>
-                            <input type="date" id="babyVaccineDate" class="form-control" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="babyVaccineDose">Dose</label>
-                            <input type="text" id="babyVaccineDose" class="form-control" required>
-                        </div>
-                        
-                        <button type="submit" class="btn">Registrar Vacina</button>
-                    </form>
+            <div class="screen-content">
+                <div class="card">
+                    <div class="tabs">
+                        <div class="tab active" onclick="changeVaccineTab('gestante')">Gestante</div>
+                        <div class="tab" onclick="changeVaccineTab('bebe')">Bebê</div>
+                    </div>
+                    
+                    <div id="gestanteVaccines" class="tab-content active">
+                        <form id="vaccineForm">
+                            <input type="hidden" id="vaccineType" value="gestante">
+                            
+                            <div class="form-group">
+                                <label for="vaccineName">Vacina</label>
+                                <select id="vaccineName" class="form-control" required>
+                                    <option value="">Selecione...</option>
+                                    <option value="Hepatite B">Hepatite B</option>
+                                    <option value="Dupla Adulto (dT)">Dupla Adulto (dT)</option>
+                                    <option value="Influenza (Gripe)">Influenza (Gripe)</option>
+                                    <option value="Febre Amarela">Febre Amarela</option>
+                                    <option value="Tríplice Viral">Tríplice Viral</option>
+                                    <option value="Hepatite A">Hepatite A</option>
+                                    <option value="Pneumocócica 23-valente">Pneumocócica 23-valente</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="vaccineDate">Data de Aplicação</label>
+                                <input type="date" id="vaccineDate" class="form-control" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="vaccineDose">Dose</label>
+                                <input type="text" id="vaccineDose" class="form-control" required>
+                            </div>
+                            
+                            <button type="submit" class="btn">Registrar Vacina</button>
+                        </form>
+                    </div>
+                    
+                    <div id="bebeVaccines" class="tab-content">
+                        <form id="babyVaccineForm">
+                            <input type="hidden" id="babyVaccineType" value="bebe">
+                            
+                            <div class="form-group">
+                                <label for="babyVaccineName">Vacina</label>
+                                <select id="babyVaccineName" class="form-control" required>
+                                    <option value="">Selecione...</option>
+                                    <option value="BCG">BCG (contra formas graves de tuberculose)</option>
+                                    <option value="Hepatite B">Hepatite B</option>
+                                    <option value="Penta/DTP">Penta/DTP (difteria, tétano, coqueluche, hepatite B e Hib)</option>
+                                    <option value="VIP/VOP">VIP/VOP (poliomielite)</option>
+                                    <option value="Pneumocócica 10-valente">Pneumocócica 10-valente</option>
+                                    <option value="Rotavírus">Rotavírus</option>
+                                    <option value="Meningocócica C">Meningocócica C</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="babyVaccineDate">Data de Aplicação</label>
+                                <input type="date" id="babyVaccineDate" class="form-control" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="babyVaccineDose">Dose</label>
+                                <input type="text" id="babyVaccineDose" class="form-control" required>
+                            </div>
+                            
+                            <button type="submit" class="btn">Registrar Vacina</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1268,44 +1311,112 @@
                 <h1>Lembretes</h1>
             </div>
             
-            <div class="card">
-                <div class="tabs">
-                    <div class="tab active" onclick="changeReminderTab('medication')">Medicação</div>
-                    <div class="tab" onclick="changeReminderTab('consultation')">Consultas</div>
-                    <div class="tab" onclick="changeReminderTab('exam')">Exames</div>
-                </div>
-                
-                <div id="medicationReminders" class="tab-content active">
-                    <form id="medicationReminderForm">
-                        <input type="hidden" id="reminderType" value="medication">
-                        
-                        <div class="form-group">
-                            <label for="medicationName">Medicação</label>
-                            <input type="text" id="medicationName" class="form-control" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="medicationDosage">Dosagem</label>
-                            <input type="text" id="medicationDosage" class="form-control" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="medicationFrequency">Frequência</label>
-                            <input type="text" id="medicationFrequency" class="form-control" required placeholder="Ex: 8h, 14h, 20h">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="medicationStartDate">Data de Início</label>
-                            <input type="date" id="medicationStartDate" class="form-control" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="medicationEndDate">Data de Término</label>
-                            <input type="date" id="medicationEndDate" class="form-control">
-                        </div>
-                        
-                        <button type="submit" class="btn">Criar Lembrete</button>
-                    </form>
+            <div class="screen-content">
+                <div class="card">
+                    <div class="tabs">
+                        <div class="tab active" onclick="changeReminderTab('medication')">Medicação</div>
+                        <div class="tab" onclick="changeReminderTab('consultation')">Consultas</div>
+                        <div class="tab" onclick="changeReminderTab('exam')">Exames</div>
+                    </div>
+                    
+                    <div id="medicationReminders" class="tab-content active">
+                        <form id="medicationReminderForm">
+                            <input type="hidden" id="reminderType" value="medication">
+                            
+                            <div class="form-group">
+                                <label for="medicationName">Medicação</label>
+                                <input type="text" id="medicationName" class="form-control" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="medicationDosage">Dosagem</label>
+                                <input type="text" id="medicationDosage" class="form-control" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="medicationFrequency">Frequência</label>
+                                <input type="text" id="medicationFrequency" class="form-control" required placeholder="Ex: 8h, 14h, 20h">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="medicationStartDate">Data de Início</label>
+                                <input type="date" id="medicationStartDate" class="form-control" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="medicationEndDate">Data de Término</label>
+                                <input type="date" id="medicationEndDate" class="form-control">
+                            </div>
+                            
+                            <button type="submit" class="btn">Criar Lembrete</button>
+                        </form>
+                    </div>
+                    
+                    <div id="consultationReminders" class="tab-content">
+                        <form id="consultationReminderForm">
+                            <input type="hidden" id="reminderType" value="consultation">
+                            
+                            <div class="form-group">
+                                <label for="consultationTitle">Título</label>
+                                <input type="text" id="consultationTitle" class="form-control" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="consultationDate">Data</label>
+                                <input type="date" id="consultationDate" class="form-control" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="consultationTime">Horário</label>
+                                <input type="time" id="consultationTime" class="form-control" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="consultationLocation">Local</label>
+                                <input type="text" id="consultationLocation" class="form-control" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="consultationNotes">Observações</label>
+                                <textarea id="consultationNotes" class="form-control" rows="3"></textarea>
+                            </div>
+                            
+                            <button type="submit" class="btn">Criar Lembrete</button>
+                        </form>
+                    </div>
+                    
+                    <div id="examReminders" class="tab-content">
+                        <form id="examReminderForm">
+                            <input type="hidden" id="reminderType" value="exam">
+                            
+                            <div class="form-group">
+                                <label for="examType">Tipo de Exame</label>
+                                <input type="text" id="examType" class="form-control" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="examDate">Data</label>
+                                <input type="date" id="examDate" class="form-control" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="examTime">Horário</label>
+                                <input type="time" id="examTime" class="form-control" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="examLocation">Local</label>
+                                <input type="text" id="examLocation" class="form-control" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="examPreparation">Preparo Necessário</label>
+                                <textarea id="examPreparation" class="form-control" rows="3"></textarea>
+                            </div>
+                            
+                            <button type="submit" class="btn">Criar Lembrete</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1319,43 +1430,45 @@
                 <h1>Monitoramento do Trabalho de Parto</h1>
             </div>
             
-            <div class="card">
-                <div class="contraction-timer">
-                    <h3 class="card-title">Cronômetro de Contração</h3>
-                    <div class="timer-display" id="contractionTimer">00:00:00</div>
-                    <button id="startContractionBtn" class="btn">Iniciar Contração</button>
-                    <button id="endContractionBtn" class="btn" style="display: none;">Finalizar Contração</button>
-                    <button id="resetContractionBtn" class="btn btn-outline" style="margin-top: 10px;">Reiniciar</button>
+            <div class="screen-content">
+                <div class="card">
+                    <div class="contraction-timer">
+                        <h3 class="card-title">Cronômetro de Contração</h3>
+                        <div class="timer-display" id="contractionTimer">00:00:00</div>
+                        <button id="startContractionBtn" class="btn">Iniciar Contração</button>
+                        <button id="endContractionBtn" class="btn" style="display: none;">Finalizar Contração</button>
+                        <button id="resetContractionBtn" class="btn btn-outline" style="margin-top: 10px;">Reiniciar</button>
+                    </div>
+                    
+                    <form id="contractionForm" style="margin-top: 20px;">
+                        <div class="form-group">
+                            <label for="contractionStartTime">Horário de Início</label>
+                            <input type="text" id="contractionStartTime" class="form-control" readonly>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="contractionEndTime">Horário de Término</label>
+                            <input type="text" id="contractionEndTime" class="form-control" readonly>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="contractionDuration">Duração</label>
+                            <input type="text" id="contractionDuration" class="form-control" readonly>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="contractionIntensity">Intensidade</label>
+                            <select id="contractionIntensity" class="form-control">
+                                <option value="Leve">Leve</option>
+                                <option value="Moderada">Moderada</option>
+                                <option value="Forte">Forte</option>
+                                <option value="Muito Forte">Muito Forte</option>
+                            </select>
+                        </div>
+                        
+                        <button type="submit" class="btn">Registrar Contração</button>
+                    </form>
                 </div>
-                
-                <form id="contractionForm" style="margin-top: 20px;">
-                    <div class="form-group">
-                        <label for="contractionStartTime">Horário de Início</label>
-                        <input type="text" id="contractionStartTime" class="form-control" readonly>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="contractionEndTime">Horário de Término</label>
-                        <input type="text" id="contractionEndTime" class="form-control" readonly>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="contractionDuration">Duração</label>
-                        <input type="text" id="contractionDuration" class="form-control" readonly>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="contractionIntensity">Intensidade</label>
-                        <select id="contractionIntensity" class="form-control">
-                            <option value="Leve">Leve</option>
-                            <option value="Moderada">Moderada</option>
-                            <option value="Forte">Forte</option>
-                            <option value="Muito Forte">Muito Forte</option>
-                        </select>
-                    </div>
-                    
-                    <button type="submit" class="btn">Registrar Contração</button>
-                </form>
             </div>
         </div>
 
@@ -1368,58 +1481,60 @@
                 <h1>Orientações Gerais</h1>
             </div>
             
-            <div class="card">
-                <div class="tabs">
-                    <div class="tab active" onclick="changeGuidanceTab('discovery')">Descoberta</div>
-                    <div class="tab" onclick="changeGuidanceTab('firstTrimester')">1º Trimestre</div>
-                    <div class="tab" onclick="changeGuidanceTab('secondTrimester')">2º Trimestre</div>
-                    <div class="tab" onclick="changeGuidanceTab('thirdTrimester')">3º Trimestre</div>
-                </div>
-                
-                <div id="discoveryGuidance" class="tab-content active">
-                    <h3 class="card-title">DESCOBERTA DA GRAVIDEZ</h3>
-                    <p>A descoberta da gravidez é um momento único e especial. Algumas orientações importantes:</p>
-                    <ul style="margin: 15px 0; padding-left: 20px;">
-                        <li>Agende sua primeira consulta de pré-natal o mais breve possível</li>
-                        <li>Inicie a suplementação com ácido fólico, se ainda não tiver começado</li>
-                        <li>Evite o consumo de álcool, cigarro e outras drogas</li>
-                        <li>Mantenha uma alimentação saudável e equilibrada</li>
-                        <li>Informe-se sobre os seus direitos como gestante</li>
-                    </ul>
-                </div>
-                
-                <div id="firstTrimesterGuidance" class="tab-content">
-                    <h3 class="card-title">OS TRÊS PRIMEIROS MESES DA GESTAÇÃO</h3>
-                    <p>O primeiro trimestre é crucial para o desenvolvimento do bebê:</p>
-                    <ul style="margin: 15px 0; padding-left: 20px;">
-                        <li>É comum sentir náuseas e cansaço - descanse sempre que possível</li>
-                        <li>Faça todas as consultas e exames do pré-natal</li>
-                        <li>Evite alimentos crus ou mal cozidos para prevenir infecções</li>
-                        <li>Beba bastante água e mantenha-se hidratada</li>
-                        <li>O coração do bebê começa a bater por volta da 6ª semana</li>
-                    </ul>
-                </div>
-                
-                <div id="secondTrimesterGuidance" class="tab-content">
-                    <h3 class="card-title">DO QUARTO AO SEXTO MÊS</h3>
-                    <p>O segundo trimestre é geralmente o mais confortável:</p>
-                    <ul style="margin: 15px 0; padding-left: 20px;">
-                        <li>As náuseas geralmente diminuem ou desaparecem</li>
-                        <li>Você começará a sentir os movimentos do bebê (por volta da 18ª-20ª semana)</li>
-                        <li>Sua barriga ficará mais visível - use roupas confortáveis</li>
-                        <li>Faça exercícios leves recomendados pelo seu médico</li>
-                    </ul>
-                </div>
-                
-                <div id="thirdTrimesterGuidance" class="tab-content">
-                    <h3 class="card-title">DO SÉTIMO AO NONO MÊS</h3>
-                    <p>O terceiro trimestre prepara para o parto:</p>
-                    <ul style="margin: 15px 0; padding-left: 20px;">
-                        <li>O cansaço pode retornar - descanse sempre que possível</li>
-                        <li>Os movimentos do bebê podem mudar de padrão</li>
-                        <li>Prepare o enxoval e a mala para a maternidade</li>
-                        <li>Converse com seu médico sobre o plano de parto</li>
-                    </ul>
+            <div class="screen-content">
+                <div class="card">
+                    <div class="tabs">
+                        <div class="tab active" onclick="changeGuidanceTab('discovery')">Descoberta</div>
+                        <div class="tab" onclick="changeGuidanceTab('firstTrimester')">1º Trimestre</div>
+                        <div class="tab" onclick="changeGuidanceTab('secondTrimester')">2º Trimestre</div>
+                        <div class="tab" onclick="changeGuidanceTab('thirdTrimester')">3º Trimestre</div>
+                    </div>
+                    
+                    <div id="discoveryGuidance" class="tab-content active">
+                        <h3 class="card-title">DESCOBERTA DA GRAVIDEZ</h3>
+                        <p>A descoberta da gravidez é um momento único e especial. Algumas orientações importantes:</p>
+                        <ul style="margin: 15px 0; padding-left: 20px;">
+                            <li>Agende sua primeira consulta de pré-natal o mais breve possível</li>
+                            <li>Inicie a suplementação com ácido fólico, se ainda não tiver começado</li>
+                            <li>Evite o consumo de álcool, cigarro e outras drogas</li>
+                            <li>Mantenha uma alimentação saudável e equilibrada</li>
+                            <li>Informe-se sobre os seus direitos como gestante</li>
+                        </ul>
+                    </div>
+                    
+                    <div id="firstTrimesterGuidance" class="tab-content">
+                        <h3 class="card-title">OS TRÊS PRIMEIROS MESES DA GESTAÇÃO</h3>
+                        <p>O primeiro trimestre é crucial para o desenvolvimento do bebê:</p>
+                        <ul style="margin: 15px 0; padding-left: 20px;">
+                            <li>É comum sentir náuseas e cansaço - descanse sempre que possível</li>
+                            <li>Faça todas as consultas e exames do pré-natal</li>
+                            <li>Evite alimentos crus ou mal cozidos para prevenir infecções</li>
+                            <li>Beba bastante água e mantenha-se hidratada</li>
+                            <li>O coração do bebê começa a bater por volta da 6ª semana</li>
+                        </ul>
+                    </div>
+                    
+                    <div id="secondTrimesterGuidance" class="tab-content">
+                        <h3 class="card-title">DO QUARTO AO SEXTO MÊS</h3>
+                        <p>O segundo trimestre é geralmente o mais confortável:</p>
+                        <ul style="margin: 15px 0; padding-left: 20px;">
+                            <li>As náuseas geralmente diminuem ou desaparecem</li>
+                            <li>Você começará a sentir os movimentos do bebê (por volta da 18ª-20ª semana)</li>
+                            <li>Sua barriga ficará mais visível - use roupas confortáveis</li>
+                            <li>Faça exercícios leves recomendados pelo seu médico</li>
+                        </ul>
+                    </div>
+                    
+                    <div id="thirdTrimesterGuidance" class="tab-content">
+                        <h3 class="card-title">DO SÉTIMO AO NONO MÊS</h3>
+                        <p>O terceiro trimestre prepara para o parto:</p>
+                        <ul style="margin: 15px 0; padding-left: 20px;">
+                            <li>O cansaço pode retornar - descanse sempre que possível</li>
+                            <li>Os movimentos do bebê podem mudar de padrão</li>
+                            <li>Prepare o enxoval e a mala para a maternidade</li>
+                            <li>Converse com seu médico sobre o plano de parto</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1433,30 +1548,32 @@
                 <h1>Diário da Gestante</h1>
             </div>
             
-            <div class="card">
-                <form id="diaryForm">
-                    <div class="form-group">
-                        <label for="diaryDate">Data</label>
-                        <input type="date" id="diaryDate" class="form-control" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="diaryFeelings">Sentimentos</label>
-                        <textarea id="diaryFeelings" class="form-control" rows="3" placeholder="Como você está se sentindo hoje?" required></textarea>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="diarySymptoms">Sintomas</label>
-                        <textarea id="diarySymptoms" class="form-control" rows="3" placeholder="Quais sintomas você está sentindo?"></textarea>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="diaryQuestions">Dúvidas</label>
-                        <textarea id="diaryQuestions" class="form-control" rows="3" placeholder="Quais dúvidas você gostaria de esclarecer na próxima consulta?"></textarea>
-                    </div>
-                    
-                    <button type="submit" class="btn">Salvar Registro</button>
-                </form>
+            <div class="screen-content">
+                <div class="card">
+                    <form id="diaryForm">
+                        <div class="form-group">
+                            <label for="diaryDate">Data</label>
+                            <input type="date" id="diaryDate" class="form-control" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="diaryFeelings">Sentimentos</label>
+                            <textarea id="diaryFeelings" class="form-control" rows="3" placeholder="Como você está se sentindo hoje?" required></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="diarySymptoms">Sintomas</label>
+                            <textarea id="diarySymptoms" class="form-control" rows="3" placeholder="Quais sintomas você está sentindo?"></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="diaryQuestions">Dúvidas</label>
+                            <textarea id="diaryQuestions" class="form-control" rows="3" placeholder="Quais dúvidas você gostaria de esclarecer na próxima consulta?"></textarea>
+                        </div>
+                        
+                        <button type="submit" class="btn">Salvar Registro</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
@@ -1603,6 +1720,8 @@
             
             // Reminder forms
             document.getElementById('medicationReminderForm').addEventListener('submit', saveReminder);
+            document.getElementById('consultationReminderForm').addEventListener('submit', saveReminder);
+            document.getElementById('examReminderForm').addEventListener('submit', saveReminder);
             
             // Contraction timer
             document.getElementById('startContractionBtn').addEventListener('click', startContractionTimer);
@@ -1678,13 +1797,13 @@
             document.getElementById('userName').textContent = currentUser.fullName.split(' ')[0];
             
             // Screen 3 - Gestante Data
-            document.getElementById('displayName').textContent = currentUser.fullName;
-            document.getElementById('displayBirthDate').textContent = formatDate(currentUser.birthDate);
-            document.getElementById('displayAge').textContent = calculateAge(currentUser.birthDate);
-            document.getElementById('displayOccupation').textContent = currentUser.occupation;
-            document.getElementById('displayAddress').textContent = currentUser.address;
-            document.getElementById('displaySusCard').textContent = currentUser.susCard;
-            document.getElementById('displayEmergencyPhone').textContent = currentUser.emergencyPhone;
+            document.getElementById('displayName').value = currentUser.fullName;
+            document.getElementById('displayBirthDate').value = formatDate(currentUser.birthDate);
+            document.getElementById('displayAge').value = calculateAge(currentUser.birthDate);
+            document.getElementById('displayOccupation').value = currentUser.occupation;
+            document.getElementById('displayAddress').value = currentUser.address;
+            document.getElementById('displaySusCard').value = currentUser.susCard;
+            document.getElementById('displayEmergencyPhone').value = currentUser.emergencyPhone;
         }
         
         // Format date to Brazilian format
@@ -1717,7 +1836,24 @@
             
             if (!currentUser) return;
             
+            // Get updated data
+            currentUser.partnerName = document.getElementById('partnerName').value;
+            currentUser.nisCard = document.getElementById('nisCard').value;
+            
+            // Save to localStorage
+            localStorage.setItem('gestanteUser', JSON.stringify(currentUser));
+            
             alert('Dados atualizados com sucesso!');
+        }
+        
+        // Delete all user data
+        function deleteAllData() {
+            if (confirm('Tem certeza que deseja apagar todos os seus dados? Esta ação não pode ser desfeita.')) {
+                localStorage.removeItem('gestanteUser');
+                currentUser = null;
+                showScreen('screen1');
+                alert('Todos os dados foram apagados com sucesso.');
+            }
         }
         
         // Save appointment
