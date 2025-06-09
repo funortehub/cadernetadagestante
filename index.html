@@ -31,6 +31,7 @@
             --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             --transition: all 0.3s ease;
             --welcome-color: #E6E6FA;
+            --disabled-color: #e0e0e0;
         }
 
         * {
@@ -254,12 +255,25 @@
             text-decoration: none;
             color: var(--text-color);
             min-height: 120px;
+            position: relative;
         }
 
         .menu-item:hover {
             background-color: var(--primary-color);
             color: white;
             transform: translateY(-5px);
+        }
+
+        .menu-item.disabled {
+            background-color: var(--disabled-color);
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        .menu-item.disabled:hover {
+            background-color: var(--disabled-color);
+            transform: none;
+            color: var(--text-color);
         }
 
         .menu-item i {
@@ -273,17 +287,31 @@
         }
 
         .badge {
-            display: inline-block;
+            position: absolute;
+            top: 10px;
+            right: 10px;
             padding: 3px 8px;
             background-color: var(--primary-color);
             color: white;
             border-radius: 20px;
             font-size: 0.7rem;
-            margin-left: 5px;
             vertical-align: middle;
         }
 
         .back-btn {
+            background: none;
+            border: none;
+            color: var(--primary-color);
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 5px;
+            margin-right: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .info-btn {
             background: none;
             border: none;
             color: var(--primary-color);
@@ -462,6 +490,21 @@
             max-height: 300px;
             overflow-y: auto;
             margin-top: 20px;
+        }
+
+        .history-list {
+            margin-top: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .file-preview {
+            max-width: 100%;
+            max-height: 200px;
+            margin-top: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 5px;
         }
 
         @media (max-width: 768px) {
@@ -783,8 +826,8 @@
         <!-- Tela 2: Menu Principal -->
         <div id="screen2" class="screen">
             <div class="header">
-                <button class="back-btn" onclick="showScreen('screen1')">
-                    <i class="material-icons">arrow_back</i>
+                <button class="info-btn" onclick="showAppInfo()">
+                    <i class="material-icons">info</i>
                 </button>
                 <h1>Menu Principal</h1>
             </div>
@@ -808,7 +851,7 @@
                         <span>Telefones Úteis</span>
                     </a>
                     
-                    <a href="#" class="menu-item" onclick="showScreen('screen5')">
+                    <a href="#" class="menu-item disabled" onclick="handleBetaCard()">
                         <i class="material-icons">calendar_today</i>
                         <span>Agendamentos <span class="badge">Beta</span></span>
                     </a>
@@ -823,7 +866,7 @@
                         <span>Monitoramento de Peso</span>
                     </a>
                     
-                    <a href="#" class="menu-item" onclick="showScreen('screen9')">
+                    <a href="#" class="menu-item disabled" onclick="handleBetaCard()">
                         <i class="material-icons">medical_services</i>
                         <span>Consulta Odontológica <span class="badge">Beta</span></span>
                     </a>
@@ -853,7 +896,7 @@
                         <span>Suplementação</span>
                     </a>
                     
-                    <a href="#" class="menu-item" onclick="showScreen('screen15')">
+                    <a href="#" class="menu-item disabled" onclick="handleBetaCard()">
                         <i class="material-icons">notifications</i>
                         <span>Lembretes <span class="badge">Beta</span></span>
                     </a>
@@ -1157,6 +1200,11 @@
                     <div class="chart-container">
                         <canvas id="weightChart"></canvas>
                     </div>
+
+                    <h3 class="card-title" style="margin-top: 20px;">Histórico de Peso</h3>
+                    <div id="weightHistory" class="history-list">
+                        <!-- Histórico será adicionado aqui -->
+                    </div>
                 </div>
             </div>
         </div>
@@ -1215,6 +1263,11 @@
                         
                         <button type="submit" class="btn">Salvar Consulta</button>
                     </form>
+
+                    <h3 class="card-title" style="margin-top: 20px;">Histórico de Consultas</h3>
+                    <div id="consultHistory" class="history-list">
+                        <!-- Histórico será adicionado aqui -->
+                    </div>
                 </div>
             </div>
         </div>
@@ -1298,6 +1351,120 @@
                             <button type="submit" class="btn">Registrar Vacina</button>
                         </form>
                     </div>
+
+                    <h3 class="card-title" style="margin-top: 20px;">Histórico de Vacinas</h3>
+                    <div id="vaccineHistory" class="history-list">
+                        <!-- Histórico será adicionado aqui -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tela 12: Exames Laboratoriais -->
+        <div id="screen12" class="screen">
+            <div class="header">
+                <button class="back-btn" onclick="showScreen('screen2')">
+                    <i class="material-icons">arrow_back</i>
+                </button>
+                <h1>Exames Laboratoriais</h1>
+            </div>
+            
+            <div class="screen-content">
+                <div class="card">
+                    <form id="labExamForm">
+                        <div class="form-group">
+                            <label for="examName">Nome do Exame</label>
+                            <input type="text" id="examName" class="form-control" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="examDate">Data do Exame</label>
+                            <input type="date" id="examDate" class="form-control" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="labFiles">Anexar Resultado (PDF ou Imagem)</label>
+                            <input type="file" id="labFiles" class="form-control" accept=".pdf,.jpg,.jpeg,.png" multiple>
+                        </div>
+                        
+                        <button type="submit" class="btn">Salvar Exame</button>
+                    </form>
+
+                    <h3 class="card-title" style="margin-top: 20px;">Histórico de Exames</h3>
+                    <div id="labExamsHistory" class="history-list">
+                        <!-- Histórico será adicionado aqui -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tela 13: Exames de Imagem -->
+        <div id="screen13" class="screen">
+            <div class="header">
+                <button class="back-btn" onclick="showScreen('screen2')">
+                    <i class="material-icons">arrow_back</i>
+                </button>
+                <h1>Exames de Imagem</h1>
+            </div>
+            
+            <div class="screen-content">
+                <div class="card">
+                    <form id="imageExamForm">
+                        <div class="form-group">
+                            <label for="imageExamName">Nome do Exame</label>
+                            <input type="text" id="imageExamName" class="form-control" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="imageExamDate">Data do Exame</label>
+                            <input type="date" id="imageExamDate" class="form-control" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="imageFiles">Anexar Imagens</label>
+                            <input type="file" id="imageFiles" class="form-control" accept="image/*" multiple>
+                        </div>
+                        
+                        <button type="submit" class="btn">Salvar Exame</button>
+                    </form>
+
+                    <h3 class="card-title" style="margin-top: 20px;">Histórico de Exames</h3>
+                    <div id="imageExamsHistory" class="history-list">
+                        <!-- Histórico será adicionado aqui -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tela 14: Suplementação -->
+        <div id="screen14" class="screen">
+            <div class="header">
+                <button class="back-btn" onclick="showScreen('screen2')">
+                    <i class="material-icons">arrow_back</i>
+                </button>
+                <h1>Suplementação</h1>
+            </div>
+            
+            <div class="screen-content">
+                <div class="card">
+                    <h3 class="card-title">Suplementação na Gestação</h3>
+                    <p>Segundo o Ministério da Saúde, é recomendado:</p>
+                    <ul style="margin: 15px 0; padding-left: 20px;">
+                        <li><strong>Ácido Fólico:</strong> 400 mcg por dia, desde o planejamento da gravidez até a 12ª semana de gestação.</li>
+                        <li><strong>Ferro:</strong> Suplementação diária de ferro a partir da 20ª semana até o final da gestação. A dose é de 40 mg de ferro elementar por dia.</li>
+                        <li><strong>Cálcio:</strong> Recomenda-se a ingestão de 1.000 mg por dia. Em casos de ingestão insuficiente, pode ser necessária suplementação.</li>
+                        <li><strong>Vitamina D:</strong> A suplementação pode ser necessária em casos de deficiência comprovada.</li>
+                    </ul>
+                    <p>Além disso, é importante manter uma alimentação equilibrada e rica em nutrientes.</p>
+                    
+                    <h3 class="card-title" style="margin-top: 20px;">Suplementação Infantil</h3>
+                    <p>Para bebês e crianças, o Ministério da Saúde recomenda:</p>
+                    <ul style="margin: 15px 0; padding-left: 20px;">
+                        <li><strong>Vitamina A:</strong> Suplementação para crianças de 6 a 59 meses em áreas de risco.</li>
+                        <li><strong>Ferro:</strong> Suplementação a partir do 6º mês de vida para prevenir anemia.</li>
+                        <li><strong>Vitamina D:</strong> Recomendada para todos os bebês a partir do nascimento, especialmente os amamentados exclusivamente.</li>
+                        <li><strong>Zinco:</strong> Importante para o sistema imunológico e crescimento.</li>
+                    </ul>
                 </div>
             </div>
         </div>
@@ -1468,6 +1635,11 @@
                         
                         <button type="submit" class="btn">Registrar Contração</button>
                     </form>
+
+                    <h3 class="card-title" style="margin-top: 20px;">Histórico de Contrações</h3>
+                    <div id="contractionHistory" class="history-list">
+                        <!-- Histórico será adicionado aqui -->
+                    </div>
                 </div>
             </div>
         </div>
@@ -1573,6 +1745,11 @@
                         
                         <button type="submit" class="btn">Salvar Registro</button>
                     </form>
+
+                    <h3 class="card-title" style="margin-top: 20px;">Registros Anteriores</h3>
+                    <div id="diaryHistory" class="history-list">
+                        <!-- Histórico será adicionado aqui -->
+                    </div>
                 </div>
             </div>
         </div>
@@ -1673,6 +1850,9 @@
             window.addEventListener('online', updateOnlineStatus);
             window.addEventListener('offline', updateOnlineStatus);
             updateOnlineStatus();
+
+            // Load history for various screens
+            loadAllHistory();
         });
         
         // Register service worker
@@ -1731,6 +1911,12 @@
             
             // Diary form
             document.getElementById('diaryForm').addEventListener('submit', saveDiaryEntry);
+
+            // Lab exam form
+            document.getElementById('labExamForm').addEventListener('submit', saveLabExam);
+
+            // Image exam form
+            document.getElementById('imageExamForm').addEventListener('submit', saveImageExam);
         }
         
         // Show a specific screen
@@ -1743,6 +1929,42 @@
             
             // Scroll to top when changing screens
             document.getElementById(screenId).scrollTop = 0;
+
+            // Load history for specific screens
+            switch(screenId) {
+                case 'screen8':
+                    displayWeightHistory();
+                    break;
+                case 'screen10':
+                    displayConsultHistory();
+                    break;
+                case 'screen11':
+                    displayVaccineHistory();
+                    break;
+                case 'screen12':
+                    displayLabExamsHistory();
+                    break;
+                case 'screen13':
+                    displayImageExamsHistory();
+                    break;
+                case 'screen16':
+                    displayContractionHistory();
+                    break;
+                case 'screen19':
+                    displayDiaryHistory();
+                    break;
+            }
+        }
+
+        // Load all history data
+        function loadAllHistory() {
+            displayWeightHistory();
+            displayConsultHistory();
+            displayVaccineHistory();
+            displayLabExamsHistory();
+            displayImageExamsHistory();
+            displayContractionHistory();
+            displayDiaryHistory();
         }
         
         // Register a new user
@@ -1871,7 +2093,45 @@
             
             if (!currentUser) return;
             
+            const weightData = {
+                date: document.getElementById('weightDate').value,
+                weight: parseFloat(document.getElementById('currentWeight').value),
+                height: parseFloat(document.getElementById('currentHeight').value),
+                bmi: calculateBMI(parseFloat(document.getElementById('currentWeight').value), parseFloat(document.getElementById('currentHeight').value))
+            };
+
+            // Recuperar o array existente ou criar um novo
+            let weightHistory = JSON.parse(localStorage.getItem('weightHistory')) || [];
+            weightHistory.push(weightData);
+            localStorage.setItem('weightHistory', JSON.stringify(weightHistory));
+
+            // Atualizar a exibição
+            displayWeightHistory();
+
             alert('Peso registrado com sucesso!');
+        }
+
+        function calculateBMI(weight, height) {
+            return (weight / (height * height)).toFixed(2);
+        }
+
+        function displayWeightHistory() {
+            const weightHistory = JSON.parse(localStorage.getItem('weightHistory')) || [];
+            const container = document.getElementById('weightHistory');
+            container.innerHTML = '';
+
+            if (weightHistory.length === 0) {
+                container.innerHTML = '<p>Nenhum registro encontrado.</p>';
+                return;
+            }
+
+            let html = '<ul class="history-list">';
+            weightHistory.forEach(entry => {
+                html += `<li class="list-item">${formatDate(entry.date)} - ${entry.weight} kg (IMC: ${entry.bmi})</li>`;
+            });
+            html += '</ul>';
+
+            container.innerHTML = html;
         }
         
         // Save pregnancy data
@@ -1880,7 +2140,51 @@
             
             if (!currentUser) return;
             
+            const pregnancyData = {
+                date: document.getElementById('consultDate').value,
+                gestationalAge: document.getElementById('gestationalAge').value,
+                uterineHeight: document.getElementById('uterineHeight').value,
+                fetalHeartbeat: document.getElementById('fetalHeartbeat').value,
+                fetalMovement: document.getElementById('fetalMovement').value,
+                notes: document.getElementById('consultNotes').value,
+                guidance: document.getElementById('consultGuidance').value
+            };
+
+            // Recuperar o array existente ou criar um novo
+            let pregnancyHistory = JSON.parse(localStorage.getItem('pregnancyHistory')) || [];
+            pregnancyHistory.push(pregnancyData);
+            localStorage.setItem('pregnancyHistory', JSON.stringify(pregnancyHistory));
+
+            // Atualizar a exibição
+            displayConsultHistory();
+
             alert('Consulta registrada com sucesso!');
+        }
+
+        function displayConsultHistory() {
+            const pregnancyHistory = JSON.parse(localStorage.getItem('pregnancyHistory')) || [];
+            const container = document.getElementById('consultHistory');
+            container.innerHTML = '';
+
+            if (pregnancyHistory.length === 0) {
+                container.innerHTML = '<p>Nenhum registro encontrado.</p>';
+                return;
+            }
+
+            let html = '<ul class="history-list">';
+            pregnancyHistory.forEach(entry => {
+                html += `
+                    <li class="list-item">
+                        <strong>${formatDate(entry.date)}</strong> - ${entry.gestationalAge} semanas
+                        <div>Alt. uterina: ${entry.uterineHeight || '-'}cm | BCF: ${entry.fetalHeartbeat || '-'}</div>
+                        <div>Movimentação: ${entry.fetalMovement || '-'}</div>
+                        <div>${entry.notes || ''}</div>
+                    </li>
+                `;
+            });
+            html += '</ul>';
+
+            container.innerHTML = html;
         }
         
         // Save vaccine
@@ -1889,7 +2193,46 @@
             
             if (!currentUser) return;
             
+            const vaccineData = {
+                type: e.target.id === 'vaccineForm' ? 'gestante' : 'bebe',
+                name: document.getElementById(e.target.id === 'vaccineForm' ? 'vaccineName' : 'babyVaccineName').value,
+                date: document.getElementById(e.target.id === 'vaccineForm' ? 'vaccineDate' : 'babyVaccineDate').value,
+                dose: document.getElementById(e.target.id === 'vaccineForm' ? 'vaccineDose' : 'babyVaccineDose').value
+            };
+
+            // Recuperar o array existente ou criar um novo
+            let vaccineHistory = JSON.parse(localStorage.getItem('vaccineHistory')) || [];
+            vaccineHistory.push(vaccineData);
+            localStorage.setItem('vaccineHistory', JSON.stringify(vaccineHistory));
+
+            // Atualizar a exibição
+            displayVaccineHistory();
+
             alert('Vacina registrada com sucesso!');
+        }
+
+        function displayVaccineHistory() {
+            const vaccineHistory = JSON.parse(localStorage.getItem('vaccineHistory')) || [];
+            const container = document.getElementById('vaccineHistory');
+            container.innerHTML = '';
+
+            if (vaccineHistory.length === 0) {
+                container.innerHTML = '<p>Nenhum registro encontrado.</p>';
+                return;
+            }
+
+            let html = '<ul class="history-list">';
+            vaccineHistory.forEach(entry => {
+                html += `
+                    <li class="list-item">
+                        <strong>${entry.name}</strong> (${entry.type === 'gestante' ? 'Gestante' : 'Bebê'})
+                        <div>Data: ${formatDate(entry.date)} | Dose: ${entry.dose}</div>
+                    </li>
+                `;
+            });
+            html += '</ul>';
+
+            container.innerHTML = html;
         }
         
         // Change vaccine tab
@@ -2014,7 +2357,47 @@
             
             if (!currentUser) return;
             
+            const contractionData = {
+                startTime: document.getElementById('contractionStartTime').value,
+                endTime: document.getElementById('contractionEndTime').value,
+                duration: document.getElementById('contractionDuration').value,
+                intensity: document.getElementById('contractionIntensity').value
+            };
+
+            // Recuperar o array existente ou criar um novo
+            let contractionHistory = JSON.parse(localStorage.getItem('contractionHistory')) || [];
+            contractionHistory.push(contractionData);
+            localStorage.setItem('contractionHistory', JSON.stringify(contractionHistory));
+
+            // Atualizar a exibição
+            displayContractionHistory();
+
+            resetContractionTimer();
             alert('Contração registrada com sucesso!');
+        }
+
+        function displayContractionHistory() {
+            const contractionHistory = JSON.parse(localStorage.getItem('contractionHistory')) || [];
+            const container = document.getElementById('contractionHistory');
+            container.innerHTML = '';
+
+            if (contractionHistory.length === 0) {
+                container.innerHTML = '<p>Nenhum registro encontrado.</p>';
+                return;
+            }
+
+            let html = '<ul class="history-list">';
+            contractionHistory.forEach(entry => {
+                html += `
+                    <li class="list-item">
+                        <strong>${entry.startTime}</strong> a <strong>${entry.endTime}</strong>
+                        <div>Duração: ${entry.duration} | Intensidade: ${entry.intensity}</div>
+                    </li>
+                `;
+            });
+            html += '</ul>';
+
+            container.innerHTML = html;
         }
         
         // Save diary entry
@@ -2023,7 +2406,142 @@
             
             if (!currentUser) return;
             
+            const diaryEntry = {
+                date: document.getElementById('diaryDate').value,
+                feelings: document.getElementById('diaryFeelings').value,
+                symptoms: document.getElementById('diarySymptoms').value,
+                questions: document.getElementById('diaryQuestions').value
+            };
+
+            // Recuperar o array existente ou criar um novo
+            let diaryHistory = JSON.parse(localStorage.getItem('diaryHistory')) || [];
+            diaryHistory.push(diaryEntry);
+            localStorage.setItem('diaryHistory', JSON.stringify(diaryHistory));
+
+            // Atualizar a exibição
+            displayDiaryHistory();
+
             alert('Registro do diário salvo com sucesso!');
+        }
+
+        function displayDiaryHistory() {
+            const diaryHistory = JSON.parse(localStorage.getItem('diaryHistory')) || [];
+            const container = document.getElementById('diaryHistory');
+            container.innerHTML = '';
+
+            if (diaryHistory.length === 0) {
+                container.innerHTML = '<p>Nenhum registro encontrado.</p>';
+                return;
+            }
+
+            let html = '<ul class="history-list">';
+            diaryHistory.forEach(entry => {
+                html += `
+                    <li class="list-item">
+                        <strong>${formatDate(entry.date)}</strong>
+                        <div>Sentimentos: ${entry.feelings}</div>
+                        <div>Sintomas: ${entry.symptoms || '-'}</div>
+                        <div>Dúvidas: ${entry.questions || '-'}</div>
+                    </li>
+                `;
+            });
+            html += '</ul>';
+
+            container.innerHTML = html;
+        }
+
+        // Save lab exam
+        function saveLabExam(e) {
+            e.preventDefault();
+            
+            if (!currentUser) return;
+            
+            const examData = {
+                name: document.getElementById('examName').value,
+                date: document.getElementById('examDate').value,
+                files: [] // In a real app, we would save file URLs here
+            };
+
+            // Recuperar o array existente ou criar um novo
+            let labExamsHistory = JSON.parse(localStorage.getItem('labExamsHistory')) || [];
+            labExamsHistory.push(examData);
+            localStorage.setItem('labExamsHistory', JSON.stringify(labExamsHistory));
+
+            // Atualizar a exibição
+            displayLabExamsHistory();
+
+            alert('Exame registrado com sucesso!');
+        }
+
+        function displayLabExamsHistory() {
+            const labExamsHistory = JSON.parse(localStorage.getItem('labExamsHistory')) || [];
+            const container = document.getElementById('labExamsHistory');
+            container.innerHTML = '';
+
+            if (labExamsHistory.length === 0) {
+                container.innerHTML = '<p>Nenhum registro encontrado.</p>';
+                return;
+            }
+
+            let html = '<ul class="history-list">';
+            labExamsHistory.forEach(exam => {
+                html += `
+                    <li class="list-item">
+                        <strong>${exam.name}</strong> - ${formatDate(exam.date)}
+                        <div>Arquivos: ${exam.files.length > 0 ? exam.files.join(', ') : 'Nenhum arquivo'}</div>
+                    </li>
+                `;
+            });
+            html += '</ul>';
+
+            container.innerHTML = html;
+        }
+
+        // Save image exam
+        function saveImageExam(e) {
+            e.preventDefault();
+            
+            if (!currentUser) return;
+            
+            const examData = {
+                name: document.getElementById('imageExamName').value,
+                date: document.getElementById('imageExamDate').value,
+                files: [] // In a real app, we would save file URLs here
+            };
+
+            // Recuperar o array existente ou criar um novo
+            let imageExamsHistory = JSON.parse(localStorage.getItem('imageExamsHistory')) || [];
+            imageExamsHistory.push(examData);
+            localStorage.setItem('imageExamsHistory', JSON.stringify(imageExamsHistory));
+
+            // Atualizar a exibição
+            displayImageExamsHistory();
+
+            alert('Exame registrado com sucesso!');
+        }
+
+        function displayImageExamsHistory() {
+            const imageExamsHistory = JSON.parse(localStorage.getItem('imageExamsHistory')) || [];
+            const container = document.getElementById('imageExamsHistory');
+            container.innerHTML = '';
+
+            if (imageExamsHistory.length === 0) {
+                container.innerHTML = '<p>Nenhum registro encontrado.</p>';
+                return;
+            }
+
+            let html = '<ul class="history-list">';
+            imageExamsHistory.forEach(exam => {
+                html += `
+                    <li class="list-item">
+                        <strong>${exam.name}</strong> - ${formatDate(exam.date)}
+                        <div>Imagens: ${exam.files.length > 0 ? exam.files.length + ' arquivos' : 'Nenhuma imagem'}</div>
+                    </li>
+                `;
+            });
+            html += '</ul>';
+
+            container.innerHTML = html;
         }
         
         // Call emergency number
@@ -2049,6 +2567,17 @@
                 
                 deferredPrompt = null;
             });
+        }
+
+        // Handle beta card click
+        function handleBetaCard() {
+            alert('Esta função ainda não foi implementada.');
+            return false;
+        }
+
+        // Show app info
+        function showAppInfo() {
+            alert('Aplicativo desenvolvido pelo grupo de Inovação e Saúde 2025.1\n\nAutores:\nAna Paula Silveira Fonseca\nCamila Bruno da Silva\nDeivisson Alan Silva Santos\nGiovana Nogueira e Silva\nInara Almeida Simões\nLara Melo Lafetá\nMaria Thereza Flávio da Cruz\nRana Silva Victor\nSabrina Gonçalves Silva Pereira');
         }
     </script>
     
