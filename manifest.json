@@ -1,12 +1,17 @@
 {
   "name": "Caderneta da Gestante",
   "short_name": "Gestante",
+  "description": "Aplicativo para acompanhamento gestacional",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#FFFFF0",
   "theme_color": "#836FFF",
-  "description": "Aplicativo para acompanhamento da gestação",
   "icons": [
+    {
+      "src": "https://i.imgur.com/p3ohnA9.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
     {
       "src": "https://i.imgur.com/p3ohnA9.png",
       "sizes": "192x192",
@@ -14,7 +19,22 @@
     },
     {
       "src": "https://i.imgur.com/p3ohnA9.png",
-      "sizes": "512x512",
+      "sizes": "144x144",
+      "type": "image/png"
+    },
+    {
+      "src": "https://i.imgur.com/p3ohnA9.png",
+      "sizes": "96x96",
+      "type": "image/png"
+    },
+    {
+      "src": "https://i.imgur.com/p3ohnA9.png",
+      "sizes": "72x72",
+      "type": "image/png"
+    },
+    {
+      "src": "https://i.imgur.com/p3ohnA9.png",
+      "sizes": "48x48",
       "type": "image/png"
     }
   ]
