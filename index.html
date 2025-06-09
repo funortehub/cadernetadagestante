@@ -631,6 +631,12 @@
             font-size: 0.9rem;
         }
 
+        /* Botões do cabeçalho */
+        .header-buttons {
+            display: flex;
+            align-items: center;
+        }
+
         @media (max-width: 768px) {
             .grid {
                 grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
@@ -950,7 +956,8 @@
         <!-- Tela 2: Menu Principal -->
         <div id="screen2" class="screen">
             <div class="header">
-                <div>
+                <h1>Menu Principal</h1>
+                <div class="header-buttons">
                     <button class="info-btn" onclick="showAppInfo()">
                         <i class="material-icons">info</i>
                     </button>
@@ -958,7 +965,6 @@
                         <i class="material-icons">local_hospital</i>
                     </button>
                 </div>
-                <h1>Menu Principal</h1>
             </div>
             
             <div class="screen-content">
