@@ -2,7 +2,7 @@ const CACHE_NAME = 'caderneta-gestante-v2';
 const urlsToCache = [
   './',
   'index.html',
-  'https://i.imgur.com/p3ohnA9.png',
+  'https://i.imgur.com/UdqvWLG.jpeg',
   'https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Roboto:wght@300;400;500&display=swap',
   'https://fonts.googleapis.com/icon?family=Material+Icons',
   'https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js',
