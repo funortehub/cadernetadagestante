@@ -4,8 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Caderneta da Gestante</title>
-    <link rel="manifest" href="manifest.json">
+    
+    <!-- Manifest incorporado -->
+    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIkNhZGVybmV0YSBkYSBHZXN0YW50ZSIsCiAgInNob3J0X25hbWUiOiAiQ2FkZXJuZXRhIiwKICAic3RhcnRfdXJsIjogIi4vIiwKICAiZGlzcGxheSI6ICJzdGFuZGFsb25lIiwKICAiYmFja2dyb3VuZF9jb2xvciI6ICIjRkZGRkZGIiwKICAidGhlbWVfY29sb3IiOiAiIzgzNkZGRiIsCiAgImRlc2NyaXB0aW9uIjogIkFwbGljYXRpdm8gcGFyYSBhY29tcGFuaGFtZW50byBkYSBnZXN0YcOnw6NvIiwKICAiaWNvbnMiOiBbCiAgICB7CiAgICAgICJzcmMiOiAiaHR0cHM6Ly9pLmltZ3VyLmNvbS9wM29obkE5LnBuZyIsCiAgICAgICJzaXplcyI6ICIxOTJ4MTkyIiwKICAgICAgInR5cGUiOiAiaW1hZ2UvcG5nIiwKICAgICAgInB1cnBvc2UiOiAiYW55IG1hc2thYmxlIgogICAgfSwKICAgIHsKICAgICAgInNyYyI6ICJodHRwczovL2kuaW1ndXIuY29tL3Azb2huQTkucG5nIiwKICAgICAgInNpemVzIjogIjUxMng1MTIiLAogICAgICAidHlwZSI6ICJpbWFnZS9wbmciLAogICAgICAicHVycG9zZSI6ICJhbnkgbWFza2FibGUiCiAgICB9CiAgXQp9">
+    
     <link rel="icon" type="image/png" href="https://i.imgur.com/p3ohnA9.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Caderneta">
+    <link rel="apple-touch-icon" href="https://i.imgur.com/p3ohnA9.png">
+    <link rel="mask-icon" href="https://i.imgur.com/p3ohnA9.png" color="#836FFF">
+    
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
@@ -39,6 +48,7 @@
             height: 100%;
             overflow: hidden;
             touch-action: manipulation;
+            background-color: var(--background-color);
         }
 
         body {
@@ -566,9 +576,111 @@
         ::-webkit-scrollbar-thumb:hover {
             background: var(--secondary-color);
         }
+        
+        /* Offline indicator */
+        .offline-indicator {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #e74c3c;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            z-index: 1001;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+        
+        .offline-indicator.show {
+            transform: translateY(0);
+        }
+        
+        /* Splash screen */
+        .splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #836FFF 0%, #6A5ACD 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            transition: opacity 0.5s ease;
+        }
+        
+        .splash-logo {
+            width: 120px;
+            height: 120px;
+            background-color: white;
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .splash-logo img {
+            width: 80px;
+            height: 80px;
+        }
+        
+        .splash-title {
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        
+        .splash-subtitle {
+            color: rgba(255,255,255,0.8);
+            font-size: 1rem;
+            max-width: 80%;
+            text-align: center;
+            line-height: 1.5;
+        }
+        
+        .splash-progress {
+            width: 200px;
+            height: 4px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 2px;
+            margin-top: 30px;
+            overflow: hidden;
+        }
+        
+        .splash-progress-bar {
+            height: 100%;
+            background-color: white;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
     </style>
 </head>
 <body>
+    <!-- Splash screen -->
+    <div class="splash-screen" id="splashScreen">
+        <div class="splash-logo">
+            <img src="https://i.imgur.com/p3ohnA9.png" alt="Logo">
+        </div>
+        <h1 class="splash-title">Caderneta da Gestante</h1>
+        <p class="splash-subtitle">Acompanhamento completo da sua gestação</p>
+        <div class="splash-progress">
+            <div class="splash-progress-bar" id="splashProgress"></div>
+        </div>
+    </div>
+    
+    <!-- Offline indicator -->
+    <div class="offline-indicator" id="offlineIndicator">
+        <i class="material-icons">signal_wifi_off</i> Você está offline
+    </div>
+    
     <div class="container">
         <!-- Loading overlay -->
         <div class="loading-overlay" id="loadingOverlay">
@@ -1379,9 +1491,27 @@
         // DOM elements
         const installBtn = document.getElementById('installBtn');
         const loadingOverlay = document.getElementById('loadingOverlay');
+        const offlineIndicator = document.getElementById('offlineIndicator');
+        const splashScreen = document.getElementById('splashScreen');
+        const splashProgress = document.getElementById('splashProgress');
         
         // Initialize the app when DOM is loaded
         document.addEventListener('DOMContentLoaded', function() {
+            // Splash screen animation
+            let progress = 0;
+            const splashInterval = setInterval(() => {
+                progress += 1;
+                splashProgress.style.width = `${progress}%`;
+                
+                if (progress >= 100) {
+                    clearInterval(splashInterval);
+                    splashScreen.style.opacity = '0';
+                    setTimeout(() => {
+                        splashScreen.style.display = 'none';
+                    }, 500);
+                }
+            }, 30);
+            
             // Simulate loading delay
             setTimeout(() => {
                 loadingOverlay.style.opacity = '0';
@@ -1418,7 +1548,37 @@
             document.addEventListener('touchmove', function(e) {
                 if(e.scale !== 1) e.preventDefault();
             }, { passive: false });
+            
+            // Register service worker for PWA functionality
+            registerServiceWorker();
+            
+            // Check online/offline status
+            window.addEventListener('online', updateOnlineStatus);
+            window.addEventListener('offline', updateOnlineStatus);
+            updateOnlineStatus();
         });
+        
+        // Register service worker
+        function registerServiceWorker() {
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('sw.js')
+                    .then(registration => {
+                        console.log('Service Worker registrado com escopo:', registration.scope);
+                    })
+                    .catch(error => {
+                        console.log('Falha ao registrar Service Worker:', error);
+                    });
+            }
+        }
+        
+        // Update online status
+        function updateOnlineStatus() {
+            if (navigator.onLine) {
+                offlineIndicator.classList.remove('show');
+            } else {
+                offlineIndicator.classList.add('show');
+            }
+        }
         
         // Set up all event listeners
         function setupEventListeners() {
@@ -1461,6 +1621,9 @@
             });
             
             document.getElementById(screenId).classList.add('active');
+            
+            // Scroll to top when changing screens
+            document.getElementById(screenId).scrollTop = 0;
         }
         
         // Register a new user
@@ -1749,6 +1912,75 @@
                 }
                 
                 deferredPrompt = null;
+            });
+        }
+    </script>
+    
+    <!-- Service Worker inline script -->
+    <script>
+        // Service Worker registration
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                // Create service worker inline
+                const swContent = `
+                    const CACHE_NAME = 'caderneta-gestante-v1';
+                    const urlsToCache = [
+                        './',
+                        'index.html',
+                        'https://i.imgur.com/p3ohnA9.png',
+                        'https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Roboto:wght@300;400;500&display=swap',
+                        'https://fonts.googleapis.com/icon?family=Material+Icons',
+                        'https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js',
+                        'https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js',
+                        'https://cdn.jsdelivr.net/npm/chart.js'
+                    ];
+
+                    self.addEventListener('install', event => {
+                        event.waitUntil(
+                            caches.open(CACHE_NAME)
+                                .then(cache => {
+                                    return cache.addAll(urlsToCache);
+                                })
+                        );
+                    });
+
+                    self.addEventListener('fetch', event => {
+                        event.respondWith(
+                            caches.match(event.request)
+                                .then(response => {
+                                    return response || fetch(event.request);
+                                })
+                        );
+                    });
+
+                    self.addEventListener('activate', event => {
+                        const cacheWhitelist = [CACHE_NAME];
+                        event.waitUntil(
+                            caches.keys().then(cacheNames => {
+                                return Promise.all(
+                                    cacheNames.map(cacheName => {
+                                        if (cacheWhitelist.indexOf(cacheName) === -1) {
+                                            return caches.delete(cacheName);
+                                        }
+                                    })
+                                );
+                            })
+                        );
+                    });
+                `;
+
+                // Create a blob from the service worker content
+                const blob = new Blob([swContent], { type: 'application/javascript' });
+                const swUrl = URL.createObjectURL(blob);
+
+                // Register the service worker
+                navigator.serviceWorker.register(swUrl)
+                    .then(registration => {
+                        console.log('Service Worker registrado com sucesso:', registration.scope);
+                    })
+                    .catch(error => {
+                        console.log('Falha ao registrar Service Worker:', error);
+                    });
             });
         }
     </script>
