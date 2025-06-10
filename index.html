@@ -536,6 +536,10 @@
             height: 120px;
             cursor: pointer;
             box-shadow: 0 3px 5px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f0f0f0;
         }
 
         .gallery-item img {
@@ -564,44 +568,19 @@
             justify-content: center;
             cursor: pointer;
         }
-        
-        /* Novo estilo para molduras de bebê */
-        .baby-frame {
-            width: 100px;
-            height: 100px;
-            border: 3px solid var(--primary-color);
-            border-radius: 10px;
+
+        .add-photo {
+            background-color: #e0e0e0;
+            border: 2px dashed #836FFF;
+            cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            background-color: #f9f9f9;
-            position: relative;
-            overflow: hidden;
-            margin: 5px;
-            cursor: pointer;
         }
-        
-        .baby-frame img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        
-        .baby-frame.add-photo {
-            border: 2px dashed var(--primary-color);
-            background-color: #f0f0f0;
-        }
-        
-        .baby-frame.add-photo i {
-            color: var(--primary-color);
+
+        .add-photo i {
             font-size: 2rem;
-        }
-        
-        .baby-frames-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            margin-top: 20px;
+            color: #836FFF;
         }
 
         /* Modal de visualização de imagem */
@@ -675,21 +654,6 @@
             display: flex;
             align-items: center;
         }
-        
-        /* Formulário editável */
-        .editable-field {
-            background-color: #f9f9f9;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            padding: 8px;
-            width: 100%;
-        }
-        
-        .editable-field:focus {
-            outline: none;
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 2px rgba(131, 111, 255, 0.2);
-        }
 
         @media (max-width: 768px) {
             .grid {
@@ -713,11 +677,6 @@
             .container {
                 padding: 15px;
             }
-            
-            .baby-frame {
-                width: 80px;
-                height: 80px;
-            }
         }
 
         @media (max-width: 480px) {
@@ -735,11 +694,6 @@
             
             .form-control {
                 padding: 10px 12px;
-            }
-            
-            .baby-frame {
-                width: 70px;
-                height: 70px;
             }
         }
 
@@ -1317,11 +1271,6 @@
                             <input type="number" id="currentWeight" class="form-control" step="0.1" required>
                         </div>
                         
-                        <div class="form-group">
-                            <label for="currentHeight">Altura (m)</label>
-                            <input type="number" id="currentHeight" class="form-control" step="0.01" required>
-                        </div>
-                        
                         <button type="submit" class="btn">Registrar Medidas</button>
                     </form>
                     
@@ -1387,16 +1336,6 @@
                         <div class="form-group">
                             <label for="consultGuidance">Orientações</label>
                             <textarea id="consultGuidance" class="form-control" rows="3"></textarea>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="nextConsultDate">Próxima Consulta</label>
-                            <input type="date" id="nextConsultDate" class="form-control">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="prescriptions">Medicações Prescritas</label>
-                            <textarea id="prescriptions" class="form-control" rows="2"></textarea>
                         </div>
                         
                         <button type="submit" class="btn">Salvar Consulta</button>
@@ -1663,7 +1602,7 @@
             </div>
         </div>
 
-        <!-- Tela 17: Meu Bebê (totalmente reformulada) -->
+        <!-- Tela 17: Meu Bebê (Reformulada) -->
         <div id="screen17" class="screen">
             <div class="header">
                 <button class="back-btn" onclick="showScreen('screen2')">
@@ -1675,18 +1614,18 @@
             <div class="screen-content">
                 <div class="card">
                     <h3 class="card-title">Galeria do Bebê</h3>
-                    <p>Clique em um quadro para adicionar uma foto</p>
-                    
-                    <div class="baby-frames-container" id="babyFramesContainer">
-                        <!-- Quadros serão adicionados aqui dinamicamente -->
+                    <div id="babyGallery" class="gallery">
+                        <!-- As molduras serão adicionadas aqui dinamicamente -->
+                        <div class="gallery-item add-photo" onclick="document.getElementById('babyPhotoInput').click()">
+                            <i class="material-icons">add</i>
+                        </div>
                     </div>
-                    
-                    <input type="file" id="babyPhotoInput" accept="image/*" style="display: none;">
+                    <input type="file" id="babyPhotoInput" style="display: none;" accept="image/*" multiple>
                 </div>
             </div>
         </div>
 
-        <!-- Tela 18: Orientações Gerais (corrigida) -->
+        <!-- Tela 18: Orientações Gerais -->
         <div id="screen18" class="screen">
             <div class="header">
                 <button class="back-btn" onclick="showScreen('screen2')">
@@ -1698,10 +1637,10 @@
             <div class="screen-content">
                 <div class="card">
                     <div class="tabs">
-                        <div class="tab active" data-tab="discovery" onclick="changeGuidanceTab('discovery')">Descoberta</div>
-                        <div class="tab" data-tab="firstTrimester" onclick="changeGuidanceTab('firstTrimester')">1º Trimestre</div>
-                        <div class="tab" data-tab="secondTrimester" onclick="changeGuidanceTab('secondTrimester')">2º Trimestre</div>
-                        <div class="tab" data-tab="thirdTrimester" onclick="changeGuidanceTab('thirdTrimester')">3º Trimestre</div>
+                        <div class="tab active" onclick="changeGuidanceTab('discovery')">Descoberta</div>
+                        <div class="tab" onclick="changeGuidanceTab('firstTrimester')">1º Trimestre</div>
+                        <div class="tab" onclick="changeGuidanceTab('secondTrimester')">2º Trimestre</div>
+                        <div class="tab" onclick="changeGuidanceTab('thirdTrimester')">3º Trimestre</div>
                     </div>
                     
                     <div id="discoveryGuidance" class="tab-content active">
@@ -1853,7 +1792,7 @@
                     <i class="material-icons">arrow_back</i>
                 </button>
                 <h1>Detalhes do Paciente</h1>
-                <button id="editPatientBtn" class="btn" onclick="toggleEditMode()">Editar</button>
+                <button class="btn" id="editPatientBtn">Editar</button>
             </div>
             
             <div class="screen-content">
@@ -1899,8 +1838,7 @@
         let contractionTimerSeconds = 0;
         let weightChart = null;
         let currentPatientId = null;
-        let isEditMode = false;
-        let currentPhotoFrame = null;
+        let isEditingPatient = false;
 
         // DOM elements
         const installBtn = document.getElementById('installBtn');
@@ -1910,8 +1848,6 @@
         const splashProgress = document.getElementById('splashProgress');
         const imageModal = document.getElementById('imageModal');
         const modalImage = document.getElementById('modalImage');
-        const babyFramesContainer = document.getElementById('babyFramesContainer');
-        const babyPhotoInput = document.getElementById('babyPhotoInput');
         
         // Initialize the app when DOM is loaded
         document.addEventListener('DOMContentLoaded', function() {
@@ -1977,9 +1913,6 @@
 
             // Load history for various screens
             loadAllHistory();
-            
-            // Initialize baby frames
-            initBabyFrames();
         });
         
         // Register service worker
@@ -2037,79 +1970,14 @@
             // Image exam form
             document.getElementById('imageExamForm').addEventListener('submit', saveImageExam);
             
-            // Baby photo input
-            babyPhotoInput.addEventListener('change', handleBabyPhotoUpload);
+            // Baby photo upload
+            document.getElementById('babyPhotoInput').addEventListener('change', handleBabyPhotoUpload);
             
             // Doctor login form
             document.getElementById('doctorLoginForm').addEventListener('submit', doctorLogin);
             
             // Search patient
             document.getElementById('searchPatient').addEventListener('input', searchPatients);
-        }
-        
-        // Initialize baby frames
-        function initBabyFrames() {
-            // Create 6 frames (3 rows of 2)
-            for (let i = 0; i < 6; i++) {
-                const frame = document.createElement('div');
-                frame.className = 'baby-frame add-photo';
-                frame.innerHTML = '<i class="material-icons">add_a_photo</i>';
-                frame.onclick = () => {
-                    currentPhotoFrame = frame;
-                    babyPhotoInput.click();
-                };
-                babyFramesContainer.appendChild(frame);
-            }
-            
-            // Load saved photos
-            loadBabyPhotos();
-        }
-        
-        // Load baby photos from localStorage
-        function loadBabyPhotos() {
-            if (!currentUser) return;
-            
-            const savedPhotos = localStorage.getItem(`babyPhotos_${currentUser.id}`);
-            if (savedPhotos) {
-                const photos = JSON.parse(savedPhotos);
-                const frames = babyFramesContainer.querySelectorAll('.baby-frame');
-                
-                photos.forEach((photo, index) => {
-                    if (index < frames.length) {
-                        frames[index].innerHTML = `<img src="${photo}" alt="Foto do bebê">`;
-                        frames[index].classList.remove('add-photo');
-                    }
-                });
-            }
-        }
-        
-        // Handle baby photo upload
-        function handleBabyPhotoUpload(event) {
-            if (!currentUser || !event.target.files || event.target.files.length === 0) return;
-            
-            const file = event.target.files[0];
-            const reader = new FileReader();
-            
-            reader.onload = function(e) {
-                const photoDataUrl = e.target.result;
-                
-                // Save to localStorage
-                let savedPhotos = localStorage.getItem(`babyPhotos_${currentUser.id}`);
-                savedPhotos = savedPhotos ? JSON.parse(savedPhotos) : [];
-                savedPhotos.push(photoDataUrl);
-                localStorage.setItem(`babyPhotos_${currentUser.id}`, JSON.stringify(savedPhotos));
-                
-                // Update the frame
-                if (currentPhotoFrame) {
-                    currentPhotoFrame.innerHTML = `<img src="${photoDataUrl}" alt="Foto do bebê">`;
-                    currentPhotoFrame.classList.remove('add-photo');
-                }
-                
-                // Reset input
-                event.target.value = '';
-            };
-            
-            reader.readAsDataURL(file);
         }
         
         // Show a specific screen
@@ -2144,7 +2012,11 @@
                     displayContractionHistory();
                     break;
                 case 'screen17':
-                    loadBabyPhotos();
+                    displayBabyGallery();
+                    break;
+                case 'screen18':
+                    // Garantir que a aba ativa seja mostrada
+                    changeGuidanceTab('discovery');
                     break;
                 case 'screen19':
                     displayDiaryHistory();
@@ -2163,6 +2035,7 @@
             displayLabExamsHistory();
             displayImageExamsHistory();
             displayContractionHistory();
+            displayBabyGallery();
             displayDiaryHistory();
         }
         
@@ -2325,7 +2198,6 @@
             const weightData = {
                 date: document.getElementById('weightDate').value,
                 weight: parseFloat(document.getElementById('currentWeight').value),
-                height: parseFloat(document.getElementById('currentHeight').value),
                 timestamp: new Date()
             };
 
@@ -2451,8 +2323,6 @@
                 fetalMovement: document.getElementById('fetalMovement').value,
                 notes: document.getElementById('consultNotes').value,
                 guidance: document.getElementById('consultGuidance').value,
-                nextConsultDate: document.getElementById('nextConsultDate').value,
-                prescriptions: document.getElementById('prescriptions').value,
                 timestamp: new Date()
             };
 
@@ -2497,8 +2367,6 @@
                                 <div>Alt. uterina: ${data.uterineHeight || '-'}cm | BCF: ${data.fetalHeartbeat || '-'}</div>
                                 <div>Movimentação: ${data.fetalMovement || '-'}</div>
                                 <div>${data.notes || ''}</div>
-                                ${data.prescriptions ? `<div><strong>Medicações:</strong> ${data.prescriptions}</div>` : ''}
-                                ${data.nextConsultDate ? `<div><strong>Próxima consulta:</strong> ${formatDate(data.nextConsultDate)}</div>` : ''}
                             </li>
                         `;
                     });
@@ -2605,75 +2473,47 @@
             
             showLoading();
             
-            // Save exam data to Firestore
-            const examData = {
+            // Salvar no localStorage
+            const exams = JSON.parse(localStorage.getItem(`labExams_${currentUser.id}`)) || [];
+            const newExam = {
+                id: Date.now(),
                 name: examName,
                 date: examDate,
-                files: [],
-                timestamp: new Date()
+                files: []
             };
             
-            // First save exam data to get document ID
-            db.collection("usuarios").doc(currentUser.id).collection("exames_laboratoriais").add(examData)
-                .then(docRef => {
-                    const examId = docRef.id;
-                    const uploadPromises = [];
-                    
-                    // Upload each file
-                    for (let i = 0; i < files.length; i++) {
-                        const file = files[i];
-                        const storageRef = storage.ref(`exames/${currentUser.id}/${examId}/${file.name}`);
-                        const uploadTask = storageRef.put(file);
-                        
-                        uploadPromises.push(
-                            new Promise((resolve, reject) => {
-                                uploadTask.on('state_changed',
-                                    (snapshot) => {
-                                        // Progress monitoring
-                                    },
-                                    (error) => {
-                                        reject(error);
-                                    },
-                                    () => {
-                                        // Get download URL after upload completes
-                                        uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
-                                            resolve({
-                                                name: file.name,
-                                                type: file.type,
-                                                url: downloadURL
-                                            });
-                                        });
-                                    }
-                                );
-                            })
-                        );
-                    }
-                    
-                    // Wait for all files to upload
-                    Promise.all(uploadPromises)
-                        .then(fileData => {
-                            // Update exam document with file URLs
-                            return db.collection("usuarios").doc(currentUser.id)
-                                .collection("exames_laboratoriais").doc(examId)
-                                .update({
-                                    files: fileData
-                                });
-                        })
-                        .then(() => {
-                            hideLoading();
-                            alert('Exame registrado com sucesso!');
-                            displayLabExamsHistory();
-                        })
-                        .catch(error => {
-                            console.error("Erro ao fazer upload de arquivos: ", error);
-                            hideLoading();
-                            alert('Erro ao fazer upload de arquivos. Tente novamente.');
+            // Processar arquivos
+            const fileReaders = [];
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                const reader = new FileReader();
+                
+                fileReaders.push(new Promise((resolve) => {
+                    reader.onload = function(event) {
+                        newExam.files.push({
+                            name: file.name,
+                            type: file.type,
+                            data: event.target.result
                         });
+                        resolve();
+                    };
+                    reader.readAsDataURL(file);
+                }));
+            }
+            
+            Promise.all(fileReaders)
+                .then(() => {
+                    exams.push(newExam);
+                    localStorage.setItem(`labExams_${currentUser.id}`, JSON.stringify(exams));
+                    hideLoading();
+                    alert('Exame registrado com sucesso!');
+                    displayLabExamsHistory();
+                    document.getElementById('labExamForm').reset();
                 })
                 .catch(error => {
-                    console.error("Erro ao salvar exame: ", error);
+                    console.error("Erro ao processar arquivos: ", error);
                     hideLoading();
-                    alert('Erro ao registrar exame. Tente novamente.');
+                    alert('Erro ao processar arquivos. Tente novamente.');
                 });
         }
 
@@ -2683,50 +2523,42 @@
             const container = document.getElementById('labExamsHistory');
             container.innerHTML = '<p>Carregando...</p>';
             
-            // Get lab exams history from Firestore
-            db.collection("usuarios").doc(currentUser.id).collection("exames_laboratoriais")
-                .orderBy("timestamp", "desc")
-                .get()
-                .then(querySnapshot => {
-                    if (querySnapshot.empty) {
-                        container.innerHTML = '<p>Nenhum registro encontrado.</p>';
-                        return;
-                    }
-                    
-                    let html = '<ul class="history-list">';
-                    querySnapshot.forEach(doc => {
-                        const data = doc.data();
-                        html += `
-                            <li class="list-item">
-                                <strong>${data.name}</strong> - ${formatDate(data.date)}
-                                <div class="file-previews">
-                        `;
-                        
-                        if (data.files && data.files.length > 0) {
-                            data.files.forEach(file => {
-                                if (file.type === 'application/pdf') {
-                                    html += `<div><a href="${file.url}" target="_blank">${file.name}</a></div>`;
-                                } else {
-                                    html += `<div><img src="${file.url}" class="file-preview" alt="${file.name}" onclick="openModal('${file.url}')"></div>`;
-                                }
-                            });
+            // Recuperar do localStorage
+            const exams = JSON.parse(localStorage.getItem(`labExams_${currentUser.id}`)) || [];
+            
+            if (exams.length === 0) {
+                container.innerHTML = '<p>Nenhum exame encontrado.</p>';
+                return;
+            }
+            
+            let html = '<ul class="history-list">';
+            exams.forEach(exam => {
+                html += `
+                    <li class="list-item">
+                        <strong>${exam.name}</strong> - ${formatDate(exam.date)}
+                        <div class="file-previews">
+                `;
+                
+                if (exam.files && exam.files.length > 0) {
+                    exam.files.forEach(file => {
+                        if (file.type === 'application/pdf') {
+                            html += `<div><a href="${file.data}" target="_blank">${file.name}</a></div>`;
                         } else {
-                            html += '<div>Nenhum arquivo anexado</div>';
+                            html += `<div><img src="${file.data}" class="file-preview" alt="${file.name}" onclick="openModal('${file.data}')"></div>`;
                         }
-                        
-                        html += `
-                                </div>
-                            </li>
-                        `;
                     });
-                    html += '</ul>';
-                    
-                    container.innerHTML = html;
-                })
-                .catch(error => {
-                    console.error("Erro ao carregar histórico de exames: ", error);
-                    container.innerHTML = '<p>Erro ao carregar histórico.</p>';
-                });
+                } else {
+                    html += '<div>Nenhum arquivo anexado</div>';
+                }
+                
+                html += `
+                        </div>
+                    </li>
+                `;
+            });
+            html += '</ul>';
+            
+            container.innerHTML = html;
         }
 
         // Save image exam
@@ -2746,74 +2578,46 @@
             
             showLoading();
             
-            // Save exam data to Firestore
-            const examData = {
+            // Salvar no localStorage
+            const exams = JSON.parse(localStorage.getItem(`imageExams_${currentUser.id}`)) || [];
+            const newExam = {
+                id: Date.now(),
                 name: examName,
                 date: examDate,
-                images: [],
-                timestamp: new Date()
+                images: []
             };
             
-            // First save exam data to get document ID
-            db.collection("usuarios").doc(currentUser.id).collection("exames_imagem").add(examData)
-                .then(docRef => {
-                    const examId = docRef.id;
-                    const uploadPromises = [];
-                    
-                    // Upload each file
-                    for (let i = 0; i < files.length; i++) {
-                        const file = files[i];
-                        const storageRef = storage.ref(`exames_imagem/${currentUser.id}/${examId}/${file.name}`);
-                        const uploadTask = storageRef.put(file);
-                        
-                        uploadPromises.push(
-                            new Promise((resolve, reject) => {
-                                uploadTask.on('state_changed',
-                                    (snapshot) => {
-                                        // Progress monitoring
-                                    },
-                                    (error) => {
-                                        reject(error);
-                                    },
-                                    () => {
-                                        // Get download URL after upload completes
-                                        uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
-                                            resolve({
-                                                name: file.name,
-                                                url: downloadURL
-                                            });
-                                        });
-                                    }
-                                );
-                            })
-                        );
-                    }
-                    
-                    // Wait for all files to upload
-                    Promise.all(uploadPromises)
-                        .then(imageData => {
-                            // Update exam document with image URLs
-                            return db.collection("usuarios").doc(currentUser.id)
-                                .collection("exames_imagem").doc(examId)
-                                .update({
-                                    images: imageData
-                                });
-                        })
-                        .then(() => {
-                            hideLoading();
-                            alert('Exame registrado com sucesso!');
-                            displayImageExamsHistory();
-                        })
-                        .catch(error => {
-                            console.error("Erro ao fazer upload de imagens: ", error);
-                            hideLoading();
-                            alert('Erro ao fazer upload de imagens. Tente novamente.');
+            // Processar imagens
+            const fileReaders = [];
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                const reader = new FileReader();
+                
+                fileReaders.push(new Promise((resolve) => {
+                    reader.onload = function(event) {
+                        newExam.images.push({
+                            name: file.name,
+                            data: event.target.result
                         });
+                        resolve();
+                    };
+                    reader.readAsDataURL(file);
+                }));
+            }
+            
+            Promise.all(fileReaders)
+                .then(() => {
+                    exams.push(newExam);
+                    localStorage.setItem(`imageExams_${currentUser.id}`, JSON.stringify(exams));
+                    hideLoading();
+                    alert('Exame registrado com sucesso!');
+                    displayImageExamsHistory();
+                    document.getElementById('imageExamForm').reset();
                 })
                 .catch(error => {
-                    console.error("Erro ao salvar exame: ", error);
+                    console.error("Erro ao processar imagens: ", error);
                     hideLoading();
-                    alert('Erro ao registrar exame. Tente novamente.');
+                    alert('Erro ao processar imagens. Tente novamente.');
                 });
         }
 
@@ -2823,46 +2627,38 @@
             const container = document.getElementById('imageExamsHistory');
             container.innerHTML = '<p>Carregando...</p>';
             
-            // Get image exams history from Firestore
-            db.collection("usuarios").doc(currentUser.id).collection("exames_imagem")
-                .orderBy("timestamp", "desc")
-                .get()
-                .then(querySnapshot => {
-                    if (querySnapshot.empty) {
-                        container.innerHTML = '<p>Nenhum registro encontrado.</p>';
-                        return;
-                    }
-                    
-                    let html = '<ul class="history-list">';
-                    querySnapshot.forEach(doc => {
-                        const data = doc.data();
-                        html += `
-                            <li class="list-item">
-                                <strong>${data.name}</strong> - ${formatDate(data.date)}
-                                <div class="image-previews">
-                        `;
-                        
-                        if (data.images && data.images.length > 0) {
-                            data.images.forEach(image => {
-                                html += `<img src="${image.url}" class="file-preview" alt="${image.name}" onclick="openModal('${image.url}')">`;
-                            });
-                        } else {
-                            html += '<div>Nenhuma imagem anexada</div>';
-                        }
-                        
-                        html += `
-                                </div>
-                            </li>
-                        `;
+            // Recuperar do localStorage
+            const exams = JSON.parse(localStorage.getItem(`imageExams_${currentUser.id}`)) || [];
+            
+            if (exams.length === 0) {
+                container.innerHTML = '<p>Nenhum exame encontrado.</p>';
+                return;
+            }
+            
+            let html = '<ul class="history-list">';
+            exams.forEach(exam => {
+                html += `
+                    <li class="list-item">
+                        <strong>${exam.name}</strong> - ${formatDate(exam.date)}
+                        <div class="image-previews">
+                `;
+                
+                if (exam.images && exam.images.length > 0) {
+                    exam.images.forEach(image => {
+                        html += `<img src="${image.data}" class="file-preview" alt="${image.name}" onclick="openModal('${image.data}')">`;
                     });
-                    html += '</ul>';
-                    
-                    container.innerHTML = html;
-                })
-                .catch(error => {
-                    console.error("Erro ao carregar histórico de exames: ", error);
-                    container.innerHTML = '<p>Erro ao carregar histórico.</p>';
-                });
+                } else {
+                    html += '<div>Nenhuma imagem anexada</div>';
+                }
+                
+                html += `
+                        </div>
+                    </li>
+                `;
+            });
+            html += '</ul>';
+            
+            container.innerHTML = html;
         }
         
         // Start contraction timer
@@ -3080,6 +2876,76 @@
                 });
         }
         
+        // Handle baby photo upload
+        function handleBabyPhotoUpload(e) {
+            const files = e.target.files;
+            if (files.length === 0) return;
+            
+            if (!currentUser) return;
+            
+            // Recuperar fotos existentes
+            const babyPhotos = JSON.parse(localStorage.getItem(`babyPhotos_${currentUser.id}`)) || [];
+            
+            // Processar cada arquivo
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                const reader = new FileReader();
+                
+                reader.onload = function(event) {
+                    const newPhoto = {
+                        id: Date.now(),
+                        data: event.target.result
+                    };
+                    babyPhotos.push(newPhoto);
+                    localStorage.setItem(`babyPhotos_${currentUser.id}`, JSON.stringify(babyPhotos));
+                    displayBabyGallery();
+                };
+                
+                reader.readAsDataURL(file);
+            }
+        }
+        
+        // Display baby gallery
+        function displayBabyGallery() {
+            if (!currentUser) return;
+            
+            const container = document.getElementById('babyGallery');
+            container.innerHTML = '';
+            
+            // Recuperar fotos do localStorage
+            const babyPhotos = JSON.parse(localStorage.getItem(`babyPhotos_${currentUser.id}`)) || [];
+            
+            // Adicionar fotos
+            babyPhotos.forEach(photo => {
+                const photoElement = document.createElement('div');
+                photoElement.className = 'gallery-item';
+                photoElement.innerHTML = `
+                    <img src="${photo.data}" alt="Foto do bebê" onclick="openModal('${photo.data}')">
+                    <button class="delete-btn" onclick="deleteBabyPhoto(${photo.id})">
+                        <i class="material-icons">delete</i>
+                    </button>
+                `;
+                container.appendChild(photoElement);
+            });
+            
+            // Adicionar botão de adicionar
+            const addButton = document.createElement('div');
+            addButton.className = 'gallery-item add-photo';
+            addButton.innerHTML = '<i class="material-icons">add</i>';
+            addButton.onclick = () => document.getElementById('babyPhotoInput').click();
+            container.appendChild(addButton);
+        }
+        
+        // Delete baby photo
+        function deleteBabyPhoto(photoId) {
+            if (!currentUser) return;
+            
+            let babyPhotos = JSON.parse(localStorage.getItem(`babyPhotos_${currentUser.id}`)) || [];
+            babyPhotos = babyPhotos.filter(photo => photo.id !== photoId);
+            localStorage.setItem(`babyPhotos_${currentUser.id}`, JSON.stringify(babyPhotos));
+            displayBabyGallery();
+        }
+        
         // Doctor login
         function doctorLogin(e) {
             e.preventDefault();
@@ -3163,37 +3029,59 @@
                     let html = `
                         <div class="card">
                             <h2 class="card-title">${user.fullName}</h2>
-                            <div class="form-group">
-                                <label>CPF</label>
-                                <div id="patientCpf" class="editable-field" contenteditable="false">${user.cpf || '-'}</div>
-                            </div>
-                            <div class="form-group">
-                                <label>Email</label>
-                                <div id="patientEmail" class="editable-field" contenteditable="false">${user.email || '-'}</div>
-                            </div>
-                            <div class="form-group">
-                                <label>Telefone</label>
-                                <div id="patientPhone" class="editable-field" contenteditable="false">${user.emergencyPhone || '-'}</div>
-                            </div>
-                            <div class="form-group">
-                                <label>Endereço</label>
-                                <div id="patientAddress" class="editable-field" contenteditable="false">${user.address || '-'}</div>
-                            </div>
                             
-                            <div class="tabs">
-                                <div class="tab active" data-tab="consultas" onclick="changePatientTab('consultas')">Consultas</div>
-                                <div class="tab" data-tab="exames" onclick="changePatientTab('exames')">Exames</div>
-                                <div class="tab" data-tab="contracoes" onclick="changePatientTab('contracoes')">Contrações</div>
-                            </div>
+                            <form id="editPatientForm">
+                                <div class="form-group">
+                                    <label for="patientFullName">Nome Completo</label>
+                                    <input type="text" id="patientFullName" class="form-control" value="${user.fullName}" readonly>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="patientBirthDate">Data de Nascimento</label>
+                                    <input type="date" id="patientBirthDate" class="form-control" value="${user.birthDate}" readonly>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="patientCpf">CPF</label>
+                                    <input type="text" id="patientCpf" class="form-control" value="${user.cpf}" readonly>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="patientSusCard">Cartão SUS</label>
+                                    <input type="text" id="patientSusCard" class="form-control" value="${user.susCard}" readonly>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="patientEmail">Email</label>
+                                    <input type="email" id="patientEmail" class="form-control" value="${user.email}" readonly>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="patientOccupation">Ocupação</label>
+                                    <input type="text" id="patientOccupation" class="form-control" value="${user.occupation}" readonly>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="patientAddress">Endereço</label>
+                                    <input type="text" id="patientAddress" class="form-control" value="${user.address}" readonly>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="patientEmergencyPhone">Telefone de Emergência</label>
+                                    <input type="tel" id="patientEmergencyPhone" class="form-control" value="${user.emergencyPhone}" readonly>
+                                </div>
+                                
+                                <div id="editPatientControls" style="display: none; margin-top: 20px;">
+                                    <button type="button" class="btn" onclick="savePatientChanges()">Salvar Alterações</button>
+                                    <button type="button" class="btn btn-outline" onclick="cancelEditPatient()">Cancelar</button>
+                                </div>
+                            </form>
                             
-                            <div id="patientConsultas" class="tab-content active">
-                                <div id="patientConsultHistory"></div>
-                            </div>
-                            <div id="patientExames" class="tab-content">
-                                <div id="patientExamsHistory"></div>
-                            </div>
-                            <div id="patientContracoes" class="tab-content">
-                                <div id="patientContractionHistory"></div>
+                            <div style="margin-top: 30px;">
+                                <button class="btn" onclick="showPatientScreen('screen10')">
+                                    <i class="material-icons btn-icon">pregnant_woman</i>
+                                    Consultas da Gestante
+                                </button>
                             </div>
                         </div>
                     `;
@@ -3201,8 +3089,12 @@
                     container.innerHTML = html;
                     hideLoading();
                     
-                    // Load patient consult history
-                    loadPatientConsultHistory(patientId);
+                    // Configurar botão de edição
+                    const editBtn = document.getElementById('editPatientBtn');
+                    editBtn.onclick = () => {
+                        isEditingPatient = !isEditingPatient;
+                        togglePatientEditMode(isEditingPatient);
+                    };
                 })
                 .catch(error => {
                     console.error("Erro ao carregar paciente: ", error);
@@ -3211,221 +3103,68 @@
                 });
         }
         
-        function toggleEditMode() {
-            isEditMode = !isEditMode;
-            const editBtn = document.getElementById('editPatientBtn');
+        function togglePatientEditMode(enable) {
+            const fields = [
+                'patientFullName', 'patientBirthDate', 'patientCpf',
+                'patientSusCard', 'patientEmail', 'patientOccupation',
+                'patientAddress', 'patientEmergencyPhone'
+            ];
             
-            if (isEditMode) {
-                editBtn.textContent = 'Salvar';
-                document.querySelectorAll('.editable-field').forEach(field => {
-                    field.contentEditable = 'true';
-                    field.classList.add('editable-active');
-                });
-            } else {
-                editBtn.textContent = 'Editar';
-                document.querySelectorAll('.editable-field').forEach(field => {
-                    field.contentEditable = 'false';
-                    field.classList.remove('editable-active');
-                });
-                
-                // Save changes
-                savePatientChanges();
-            }
+            fields.forEach(field => {
+                const element = document.getElementById(field);
+                element.readOnly = !enable;
+            });
+            
+            document.getElementById('editPatientControls').style.display = enable ? 'flex' : 'none';
+            document.getElementById('editPatientBtn').textContent = enable ? 'Cancelar' : 'Editar';
         }
         
         function savePatientChanges() {
-            if (!currentPatientId) return;
+            showLoading();
             
             const updatedData = {
-                cpf: document.getElementById('patientCpf').textContent,
-                email: document.getElementById('patientEmail').textContent,
-                emergencyPhone: document.getElementById('patientPhone').textContent,
-                address: document.getElementById('patientAddress').textContent
+                fullName: document.getElementById('patientFullName').value,
+                birthDate: document.getElementById('patientBirthDate').value,
+                cpf: document.getElementById('patientCpf').value,
+                susCard: document.getElementById('patientSusCard').value,
+                email: document.getElementById('patientEmail').value,
+                occupation: document.getElementById('patientOccupation').value,
+                address: document.getElementById('patientAddress').value,
+                emergencyPhone: document.getElementById('patientEmergencyPhone').value
             };
-            
-            showLoading();
             
             db.collection("usuarios").doc(currentPatientId).update(updatedData)
                 .then(() => {
                     hideLoading();
                     alert('Dados do paciente atualizados com sucesso!');
+                    isEditingPatient = false;
+                    togglePatientEditMode(false);
+                    loadPatientDetails(currentPatientId); // Recarregar dados
                 })
                 .catch(error => {
-                    console.error("Erro ao atualizar dados do paciente: ", error);
+                    console.error("Erro ao atualizar paciente: ", error);
                     hideLoading();
-                    alert('Erro ao atualizar dados. Tente novamente.');
+                    alert('Erro ao atualizar dados do paciente.');
                 });
         }
         
-        function changePatientTab(tab) {
-            document.querySelectorAll('#patientDetails .tab').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('#patientDetails .tab-content').forEach(c => c.classList.remove('active'));
-            
-            document.querySelector(`#patientDetails .tab[data-tab="${tab}"]`).classList.add('active');
-            document.getElementById(`patient${tab.charAt(0).toUpperCase() + tab.slice(1)}`).classList.add('active');
-            
-            // Load data for the selected tab
-            switch(tab) {
-                case 'consultas':
-                    loadPatientConsultHistory(currentPatientId);
-                    break;
-                case 'exames':
-                    loadPatientExamsHistory(currentPatientId);
-                    break;
-                case 'contracoes':
-                    loadPatientContractionHistory(currentPatientId);
-                    break;
-            }
+        function cancelEditPatient() {
+            isEditingPatient = false;
+            togglePatientEditMode(false);
+            loadPatientDetails(currentPatientId); // Recarregar dados originais
         }
         
-        function loadPatientConsultHistory(patientId) {
-            const container = document.getElementById('patientConsultHistory');
-            container.innerHTML = '<p>Carregando histórico de consultas...</p>';
-            
-            db.collection("usuarios").doc(patientId).collection("consultas")
-                .orderBy("timestamp", "desc")
-                .get()
-                .then(querySnapshot => {
-                    if (querySnapshot.empty) {
-                        container.innerHTML = '<p>Nenhum registro encontrado.</p>';
-                        return;
-                    }
-                    
-                    let html = '<ul class="history-list">';
-                    querySnapshot.forEach(doc => {
-                        const data = doc.data();
-                        html += `
-                            <li class="list-item">
-                                <strong>${formatDate(data.date)}</strong> - ${data.gestationalAge} semanas
-                                <div>Alt. uterina: ${data.uterineHeight || '-'}cm | BCF: ${data.fetalHeartbeat || '-'}</div>
-                                <div>Movimentação: ${data.fetalMovement || '-'}</div>
-                                <div>${data.notes || ''}</div>
-                                ${data.prescriptions ? `<div><strong>Medicações:</strong> ${data.prescriptions}</div>` : ''}
-                                ${data.nextConsultDate ? `<div><strong>Próxima consulta:</strong> ${formatDate(data.nextConsultDate)}</div>` : ''}
-                            </li>
-                        `;
-                    });
-                    html += '</ul>';
-                    
-                    container.innerHTML = html;
-                })
-                .catch(error => {
-                    console.error("Erro ao carregar histórico de consultas: ", error);
-                    container.innerHTML = '<p>Erro ao carregar histórico.</p>';
-                });
+        function showPatientScreen(screenId) {
+            showScreen(screenId);
         }
         
-        function loadPatientExamsHistory(patientId) {
-            const container = document.getElementById('patientExamsHistory');
-            container.innerHTML = '<p>Carregando histórico de exames...</p>';
+        // Change guidance tab
+        function changeGuidanceTab(tab) {
+            document.querySelectorAll('#screen18 .tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('#screen18 .tab-content').forEach(c => c.classList.remove('active'));
             
-            // Combine both lab and image exams
-            Promise.all([
-                db.collection("usuarios").doc(patientId).collection("exames_laboratoriais")
-                    .orderBy("timestamp", "desc")
-                    .get(),
-                db.collection("usuarios").doc(patientId).collection("exames_imagem")
-                    .orderBy("timestamp", "desc")
-                    .get()
-            ])
-            .then(([labSnapshot, imageSnapshot]) => {
-                if (labSnapshot.empty && imageSnapshot.empty) {
-                    container.innerHTML = '<p>Nenhum exame encontrado.</p>';
-                    return;
-                }
-                
-                let html = '<ul class="history-list">';
-                
-                // Add lab exams
-                labSnapshot.forEach(doc => {
-                    const data = doc.data();
-                    html += `
-                        <li class="list-item">
-                            <strong>${data.name} (Laboratório)</strong> - ${formatDate(data.date)}
-                            <div class="file-previews">
-                    `;
-                    
-                    if (data.files && data.files.length > 0) {
-                        data.files.forEach(file => {
-                            if (file.type === 'application/pdf') {
-                                html += `<div><a href="${file.url}" target="_blank">${file.name}</a></div>`;
-                            } else {
-                                html += `<div><img src="${file.url}" class="file-preview" alt="${file.name}" onclick="openModal('${file.url}')"></div>`;
-                            }
-                        });
-                    } else {
-                        html += '<div>Nenhum arquivo anexado</div>';
-                    }
-                    
-                    html += `
-                            </div>
-                        </li>
-                    `;
-                });
-                
-                // Add image exams
-                imageSnapshot.forEach(doc => {
-                    const data = doc.data();
-                    html += `
-                        <li class="list-item">
-                            <strong>${data.name} (Imagem)</strong> - ${formatDate(data.date)}
-                            <div class="image-previews">
-                    `;
-                    
-                    if (data.images && data.images.length > 0) {
-                        data.images.forEach(image => {
-                            html += `<img src="${image.url}" class="file-preview" alt="${image.name}" onclick="openModal('${image.url}')">`;
-                        });
-                    } else {
-                        html += '<div>Nenhuma imagem anexada</div>';
-                    }
-                    
-                    html += `
-                            </div>
-                        </li>
-                    `;
-                });
-                
-                html += '</ul>';
-                container.innerHTML = html;
-            })
-            .catch(error => {
-                console.error("Erro ao carregar histórico de exames: ", error);
-                container.innerHTML = '<p>Erro ao carregar histórico.</p>';
-            });
-        }
-        
-        function loadPatientContractionHistory(patientId) {
-            const container = document.getElementById('patientContractionHistory');
-            container.innerHTML = '<p>Carregando histórico de contrações...</p>';
-            
-            db.collection("usuarios").doc(patientId).collection("contracoes")
-                .orderBy("timestamp", "desc")
-                .get()
-                .then(querySnapshot => {
-                    if (querySnapshot.empty) {
-                        container.innerHTML = '<p>Nenhum registro encontrado.</p>';
-                        return;
-                    }
-                    
-                    let html = '<ul class="history-list">';
-                    querySnapshot.forEach(doc => {
-                        const data = doc.data();
-                        html += `
-                            <li class="list-item">
-                                <strong>${data.startTime}</strong> a <strong>${data.endTime}</strong>
-                                <div>Duração: ${data.duration} | Intensidade: ${data.intensity}</div>
-                            </li>
-                        `;
-                    });
-                    html += '</ul>';
-                    
-                    container.innerHTML = html;
-                })
-                .catch(error => {
-                    console.error("Erro ao carregar histórico de contrações: ", error);
-                    container.innerHTML = '<p>Erro ao carregar histórico.</p>';
-                });
+            document.querySelector(`#screen18 .tab[onclick="changeGuidanceTab('${tab}')"]`).classList.add('active');
+            document.getElementById(`${tab}Guidance`).classList.add('active');
         }
         
         // Open image modal
@@ -3475,17 +3214,6 @@
             alert('Aplicativo desenvolvido pelo grupo de Inovação e Saúde 2025.1\n\nAutores:\nAna Paula Silveira Fonseca\nCamila Bruno da Silva\nDeivisson Alan Silva Santos\nGiovana Nogueira e Silva\nInara Almeida Simões\nLara Melo Lafetá\nMaria Thereza Flávio da Cruz\nRana Silva Victor\nSabrina Gonçalves Silva Pereira');
         }
         
-        // Change guidance tab
-        function changeGuidanceTab(tab) {
-            // Remove active class from all tabs and contents
-            document.querySelectorAll('#screen18 .tab').forEach(tab => tab.classList.remove('active'));
-            document.querySelectorAll('#screen18 .tab-content').forEach(content => content.classList.remove('active'));
-            
-            // Add active class to selected tab and content
-            document.querySelector(`#screen18 .tab[data-tab="${tab}"]`).classList.add('active');
-            document.getElementById(`${tab}Guidance`).classList.add('active');
-        }
-        
         // Show loading overlay
         function showLoading() {
             loadingOverlay.style.display = 'flex';
@@ -3500,76 +3228,6 @@
             setTimeout(() => {
                 loadingOverlay.style.display = 'none';
             }, 300);
-        }
-    </script>
-    
-    <!-- Service Worker inline script -->
-    <script>
-        // Service Worker registration
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', function() {
-                // Create service worker inline
-                const swContent = `
-                    const CACHE_NAME = 'caderneta-gestante-v1';
-                    const urlsToCache = [
-                        './',
-                        'index.html',
-                        'https://i.imgur.com/UdqvWLG.jpeg',
-                        'https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Roboto:wght@300;400;500&display=swap',
-                        'https://fonts.googleapis.com/icon?family=Material+Icons',
-                        'https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js',
-                        'https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js',
-                        'https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js',
-                        'https://cdn.jsdelivr.net/npm/chart.js'
-                    ];
-
-                    self.addEventListener('install', event => {
-                        event.waitUntil(
-                            caches.open(CACHE_NAME)
-                                .then(cache => {
-                                    return cache.addAll(urlsToCache);
-                                })
-                        );
-                    });
-
-                    self.addEventListener('fetch', event => {
-                        event.respondWith(
-                            caches.match(event.request)
-                                .then(response => {
-                                    return response || fetch(event.request);
-                                })
-                        );
-                    });
-
-                    self.addEventListener('activate', event => {
-                        const cacheWhitelist = [CACHE_NAME];
-                        event.waitUntil(
-                            caches.keys().then(cacheNames => {
-                                return Promise.all(
-                                    cacheNames.map(cacheName => {
-                                        if (cacheWhitelist.indexOf(cacheName) === -1) {
-                                            return caches.delete(cacheName);
-                                        }
-                                    })
-                                );
-                            })
-                        );
-                    });
-                `;
-
-                // Create a blob from the service worker content
-                const blob = new Blob([swContent], { type: 'application/javascript' });
-                const swUrl = URL.createObjectURL(blob);
-
-                // Register the service worker
-                navigator.serviceWorker.register(swUrl)
-                    .then(registration => {
-                        console.log('Service Worker registrado com sucesso:', registration.scope);
-                    })
-                    .catch(error => {
-                        console.log('Falha ao registrar Service Worker:', error);
-                    });
-            });
         }
     </script>
 </body>
