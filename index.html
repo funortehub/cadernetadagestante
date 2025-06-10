@@ -564,6 +564,45 @@
             justify-content: center;
             cursor: pointer;
         }
+        
+        /* Novo estilo para molduras de bebê */
+        .baby-frame {
+            width: 100px;
+            height: 100px;
+            border: 3px solid var(--primary-color);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f9f9f9;
+            position: relative;
+            overflow: hidden;
+            margin: 5px;
+            cursor: pointer;
+        }
+        
+        .baby-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .baby-frame.add-photo {
+            border: 2px dashed var(--primary-color);
+            background-color: #f0f0f0;
+        }
+        
+        .baby-frame.add-photo i {
+            color: var(--primary-color);
+            font-size: 2rem;
+        }
+        
+        .baby-frames-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 20px;
+        }
 
         /* Modal de visualização de imagem */
         .modal {
@@ -636,6 +675,21 @@
             display: flex;
             align-items: center;
         }
+        
+        /* Formulário editável */
+        .editable-field {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 8px;
+            width: 100%;
+        }
+        
+        .editable-field:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(131, 111, 255, 0.2);
+        }
 
         @media (max-width: 768px) {
             .grid {
@@ -659,6 +713,11 @@
             .container {
                 padding: 15px;
             }
+            
+            .baby-frame {
+                width: 80px;
+                height: 80px;
+            }
         }
 
         @media (max-width: 480px) {
@@ -676,6 +735,11 @@
             
             .form-control {
                 padding: 10px 12px;
+            }
+            
+            .baby-frame {
+                width: 70px;
+                height: 70px;
             }
         }
 
@@ -1325,6 +1389,16 @@
                             <textarea id="consultGuidance" class="form-control" rows="3"></textarea>
                         </div>
                         
+                        <div class="form-group">
+                            <label for="nextConsultDate">Próxima Consulta</label>
+                            <input type="date" id="nextConsultDate" class="form-control">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="prescriptions">Medicações Prescritas</label>
+                            <textarea id="prescriptions" class="form-control" rows="2"></textarea>
+                        </div>
+                        
                         <button type="submit" class="btn">Salvar Consulta</button>
                     </form>
 
@@ -1589,7 +1663,7 @@
             </div>
         </div>
 
-        <!-- Tela 17: Meu Bebê (antiga Parto) -->
+        <!-- Tela 17: Meu Bebê (totalmente reformulada) -->
         <div id="screen17" class="screen">
             <div class="header">
                 <button class="back-btn" onclick="showScreen('screen2')">
@@ -1600,34 +1674,19 @@
             
             <div class="screen-content">
                 <div class="card">
-                    <form id="babyPhotoForm">
-                        <div class="form-group">
-                            <label for="photoDate">Data</label>
-                            <input type="date" id="photoDate" class="form-control" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="photoDescription">Descrição (opcional)</label>
-                            <input type="text" id="photoDescription" class="form-control">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="babyPhotos">Fotos</label>
-                            <input type="file" id="babyPhotos" class="form-control" accept="image/*" multiple required>
-                        </div>
-                        
-                        <button type="submit" class="btn">Salvar Fotos</button>
-                    </form>
+                    <h3 class="card-title">Galeria do Bebê</h3>
+                    <p>Clique em um quadro para adicionar uma foto</p>
                     
-                    <h3 class="card-title" style="margin-top: 20px;">Galeria</h3>
-                    <div id="babyGallery" class="gallery">
-                        <!-- Galeria de fotos será carregada aqui -->
+                    <div class="baby-frames-container" id="babyFramesContainer">
+                        <!-- Quadros serão adicionados aqui dinamicamente -->
                     </div>
+                    
+                    <input type="file" id="babyPhotoInput" accept="image/*" style="display: none;">
                 </div>
             </div>
         </div>
 
-        <!-- Tela 18: Orientações Gerais -->
+        <!-- Tela 18: Orientações Gerais (corrigida) -->
         <div id="screen18" class="screen">
             <div class="header">
                 <button class="back-btn" onclick="showScreen('screen2')">
@@ -1639,10 +1698,10 @@
             <div class="screen-content">
                 <div class="card">
                     <div class="tabs">
-                        <div class="tab active" onclick="changeGuidanceTab('discovery')">Descoberta</div>
-                        <div class="tab" onclick="changeGuidanceTab('firstTrimester')">1º Trimestre</div>
-                        <div class="tab" onclick="changeGuidanceTab('secondTrimester')">2º Trimestre</div>
-                        <div class="tab" onclick="changeGuidanceTab('thirdTrimester')">3º Trimestre</div>
+                        <div class="tab active" data-tab="discovery" onclick="changeGuidanceTab('discovery')">Descoberta</div>
+                        <div class="tab" data-tab="firstTrimester" onclick="changeGuidanceTab('firstTrimester')">1º Trimestre</div>
+                        <div class="tab" data-tab="secondTrimester" onclick="changeGuidanceTab('secondTrimester')">2º Trimestre</div>
+                        <div class="tab" data-tab="thirdTrimester" onclick="changeGuidanceTab('thirdTrimester')">3º Trimestre</div>
                     </div>
                     
                     <div id="discoveryGuidance" class="tab-content active">
@@ -1794,6 +1853,7 @@
                     <i class="material-icons">arrow_back</i>
                 </button>
                 <h1>Detalhes do Paciente</h1>
+                <button id="editPatientBtn" class="btn" onclick="toggleEditMode()">Editar</button>
             </div>
             
             <div class="screen-content">
@@ -1839,6 +1899,8 @@
         let contractionTimerSeconds = 0;
         let weightChart = null;
         let currentPatientId = null;
+        let isEditMode = false;
+        let currentPhotoFrame = null;
 
         // DOM elements
         const installBtn = document.getElementById('installBtn');
@@ -1848,6 +1910,8 @@
         const splashProgress = document.getElementById('splashProgress');
         const imageModal = document.getElementById('imageModal');
         const modalImage = document.getElementById('modalImage');
+        const babyFramesContainer = document.getElementById('babyFramesContainer');
+        const babyPhotoInput = document.getElementById('babyPhotoInput');
         
         // Initialize the app when DOM is loaded
         document.addEventListener('DOMContentLoaded', function() {
@@ -1913,6 +1977,9 @@
 
             // Load history for various screens
             loadAllHistory();
+            
+            // Initialize baby frames
+            initBabyFrames();
         });
         
         // Register service worker
@@ -1970,14 +2037,79 @@
             // Image exam form
             document.getElementById('imageExamForm').addEventListener('submit', saveImageExam);
             
-            // Baby photo form
-            document.getElementById('babyPhotoForm').addEventListener('submit', saveBabyPhotos);
+            // Baby photo input
+            babyPhotoInput.addEventListener('change', handleBabyPhotoUpload);
             
             // Doctor login form
             document.getElementById('doctorLoginForm').addEventListener('submit', doctorLogin);
             
             // Search patient
             document.getElementById('searchPatient').addEventListener('input', searchPatients);
+        }
+        
+        // Initialize baby frames
+        function initBabyFrames() {
+            // Create 6 frames (3 rows of 2)
+            for (let i = 0; i < 6; i++) {
+                const frame = document.createElement('div');
+                frame.className = 'baby-frame add-photo';
+                frame.innerHTML = '<i class="material-icons">add_a_photo</i>';
+                frame.onclick = () => {
+                    currentPhotoFrame = frame;
+                    babyPhotoInput.click();
+                };
+                babyFramesContainer.appendChild(frame);
+            }
+            
+            // Load saved photos
+            loadBabyPhotos();
+        }
+        
+        // Load baby photos from localStorage
+        function loadBabyPhotos() {
+            if (!currentUser) return;
+            
+            const savedPhotos = localStorage.getItem(`babyPhotos_${currentUser.id}`);
+            if (savedPhotos) {
+                const photos = JSON.parse(savedPhotos);
+                const frames = babyFramesContainer.querySelectorAll('.baby-frame');
+                
+                photos.forEach((photo, index) => {
+                    if (index < frames.length) {
+                        frames[index].innerHTML = `<img src="${photo}" alt="Foto do bebê">`;
+                        frames[index].classList.remove('add-photo');
+                    }
+                });
+            }
+        }
+        
+        // Handle baby photo upload
+        function handleBabyPhotoUpload(event) {
+            if (!currentUser || !event.target.files || event.target.files.length === 0) return;
+            
+            const file = event.target.files[0];
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                const photoDataUrl = e.target.result;
+                
+                // Save to localStorage
+                let savedPhotos = localStorage.getItem(`babyPhotos_${currentUser.id}`);
+                savedPhotos = savedPhotos ? JSON.parse(savedPhotos) : [];
+                savedPhotos.push(photoDataUrl);
+                localStorage.setItem(`babyPhotos_${currentUser.id}`, JSON.stringify(savedPhotos));
+                
+                // Update the frame
+                if (currentPhotoFrame) {
+                    currentPhotoFrame.innerHTML = `<img src="${photoDataUrl}" alt="Foto do bebê">`;
+                    currentPhotoFrame.classList.remove('add-photo');
+                }
+                
+                // Reset input
+                event.target.value = '';
+            };
+            
+            reader.readAsDataURL(file);
         }
         
         // Show a specific screen
@@ -2012,7 +2144,7 @@
                     displayContractionHistory();
                     break;
                 case 'screen17':
-                    displayBabyGallery();
+                    loadBabyPhotos();
                     break;
                 case 'screen19':
                     displayDiaryHistory();
@@ -2031,7 +2163,6 @@
             displayLabExamsHistory();
             displayImageExamsHistory();
             displayContractionHistory();
-            displayBabyGallery();
             displayDiaryHistory();
         }
         
@@ -2195,7 +2326,6 @@
                 date: document.getElementById('weightDate').value,
                 weight: parseFloat(document.getElementById('currentWeight').value),
                 height: parseFloat(document.getElementById('currentHeight').value),
-                bmi: calculateBMI(parseFloat(document.getElementById('currentWeight').value), parseFloat(document.getElementById('currentHeight').value)),
                 timestamp: new Date()
             };
 
@@ -2213,10 +2343,6 @@
                     hideLoading();
                     alert('Erro ao registrar peso. Tente novamente.');
                 });
-        }
-
-        function calculateBMI(weight, height) {
-            return (weight / (height * height)).toFixed(2);
         }
 
         function displayWeightHistory() {
@@ -2238,7 +2364,7 @@
                     let html = '<ul class="history-list">';
                     querySnapshot.forEach(doc => {
                         const data = doc.data();
-                        html += `<li class="list-item">${formatDate(data.date)} - ${data.weight} kg (IMC: ${data.bmi})</li>`;
+                        html += `<li class="list-item">${formatDate(data.date)} - ${data.weight} kg</li>`;
                     });
                     html += '</ul>';
                     
@@ -2325,6 +2451,8 @@
                 fetalMovement: document.getElementById('fetalMovement').value,
                 notes: document.getElementById('consultNotes').value,
                 guidance: document.getElementById('consultGuidance').value,
+                nextConsultDate: document.getElementById('nextConsultDate').value,
+                prescriptions: document.getElementById('prescriptions').value,
                 timestamp: new Date()
             };
 
@@ -2369,6 +2497,8 @@
                                 <div>Alt. uterina: ${data.uterineHeight || '-'}cm | BCF: ${data.fetalHeartbeat || '-'}</div>
                                 <div>Movimentação: ${data.fetalMovement || '-'}</div>
                                 <div>${data.notes || ''}</div>
+                                ${data.prescriptions ? `<div><strong>Medicações:</strong> ${data.prescriptions}</div>` : ''}
+                                ${data.nextConsultDate ? `<div><strong>Próxima consulta:</strong> ${formatDate(data.nextConsultDate)}</div>` : ''}
                             </li>
                         `;
                     });
@@ -2950,136 +3080,6 @@
                 });
         }
         
-        // Save baby photos
-        function saveBabyPhotos(e) {
-            e.preventDefault();
-            
-            if (!currentUser) return;
-            
-            const photoDate = document.getElementById('photoDate').value;
-            const description = document.getElementById('photoDescription').value;
-            const files = document.getElementById('babyPhotos').files;
-            
-            if (files.length === 0) {
-                alert('Por favor, selecione pelo menos uma foto.');
-                return;
-            }
-            
-            showLoading();
-            
-            // Save photo data to Firestore
-            const photoData = {
-                date: photoDate,
-                description: description,
-                photos: [],
-                timestamp: new Date()
-            };
-            
-            // First save photo data to get document ID
-            db.collection("usuarios").doc(currentUser.id).collection("bebe_fotos").add(photoData)
-                .then(docRef => {
-                    const photoId = docRef.id;
-                    const uploadPromises = [];
-                    
-                    // Upload each file
-                    for (let i = 0; i < files.length; i++) {
-                        const file = files[i];
-                        const storageRef = storage.ref(`bebe_fotos/${currentUser.id}/${photoId}/${file.name}`);
-                        const uploadTask = storageRef.put(file);
-                        
-                        uploadPromises.push(
-                            new Promise((resolve, reject) => {
-                                uploadTask.on('state_changed',
-                                    (snapshot) => {
-                                        // Progress monitoring
-                                    },
-                                    (error) => {
-                                        reject(error);
-                                    },
-                                    () => {
-                                        // Get download URL after upload completes
-                                        uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
-                                            resolve({
-                                                name: file.name,
-                                                url: downloadURL
-                                            });
-                                        });
-                                    }
-                                );
-                            })
-                        );
-                    }
-                    
-                    // Wait for all files to upload
-                    Promise.all(uploadPromises)
-                        .then(photoData => {
-                            // Update photo document with photo URLs
-                            return db.collection("usuarios").doc(currentUser.id)
-                                .collection("bebe_fotos").doc(photoId)
-                                .update({
-                                    photos: photoData
-                                });
-                        })
-                        .then(() => {
-                            hideLoading();
-                            alert('Fotos salvas com sucesso!');
-                            document.getElementById('babyPhotoForm').reset();
-                            displayBabyGallery();
-                        })
-                        .catch(error => {
-                            console.error("Erro ao fazer upload de fotos: ", error);
-                            hideLoading();
-                            alert('Erro ao fazer upload de fotos. Tente novamente.');
-                        });
-                })
-                .catch(error => {
-                    console.error("Erro ao salvar fotos: ", error);
-                    hideLoading();
-                    alert('Erro ao salvar fotos. Tente novamente.');
-                });
-        }
-        
-        function displayBabyGallery() {
-            if (!currentUser) return;
-            
-            const container = document.getElementById('babyGallery');
-            container.innerHTML = '<p>Carregando...</p>';
-            
-            // Get baby photos from Firestore
-            db.collection("usuarios").doc(currentUser.id).collection("bebe_fotos")
-                .orderBy("timestamp", "desc")
-                .get()
-                .then(querySnapshot => {
-                    if (querySnapshot.empty) {
-                        container.innerHTML = '<p>Nenhuma foto encontrada.</p>';
-                        return;
-                    }
-                    
-                    let html = '';
-                    querySnapshot.forEach(doc => {
-                        const data = doc.data();
-                        if (data.photos && data.photos.length > 0) {
-                            data.photos.forEach(photo => {
-                                html += `
-                                    <div class="gallery-item">
-                                        <img src="${photo.url}" alt="${photo.name}" onclick="openModal('${photo.url}')">
-                                        <button class="delete-btn" onclick="deletePhoto('${doc.id}', '${photo.name}')">
-                                            <i class="material-icons">delete</i>
-                                        </button>
-                                    </div>
-                                `;
-                            });
-                        }
-                    });
-                    
-                    container.innerHTML = html;
-                })
-                .catch(error => {
-                    console.error("Erro ao carregar galeria: ", error);
-                    container.innerHTML = '<p>Erro ao carregar galeria.</p>';
-                });
-        }
-        
         // Doctor login
         function doctorLogin(e) {
             e.preventDefault();
@@ -3165,37 +3165,29 @@
                             <h2 class="card-title">${user.fullName}</h2>
                             <div class="form-group">
                                 <label>CPF</label>
-                                <div>${user.cpf}</div>
+                                <div id="patientCpf" class="editable-field" contenteditable="false">${user.cpf || '-'}</div>
                             </div>
                             <div class="form-group">
                                 <label>Email</label>
-                                <div>${user.email}</div>
+                                <div id="patientEmail" class="editable-field" contenteditable="false">${user.email || '-'}</div>
                             </div>
                             <div class="form-group">
                                 <label>Telefone</label>
-                                <div>${user.emergencyPhone}</div>
+                                <div id="patientPhone" class="editable-field" contenteditable="false">${user.emergencyPhone || '-'}</div>
                             </div>
                             <div class="form-group">
                                 <label>Endereço</label>
-                                <div>${user.address}</div>
+                                <div id="patientAddress" class="editable-field" contenteditable="false">${user.address || '-'}</div>
                             </div>
                             
                             <div class="tabs">
-                                <div class="tab active" onclick="changePatientTab('peso')">Peso</div>
-                                <div class="tab" onclick="changePatientTab('consultas')">Consultas</div>
-                                <div class="tab" onclick="changePatientTab('vacinas')">Vacinas</div>
-                                <div class="tab" onclick="changePatientTab('exames')">Exames</div>
-                                <div class="tab" onclick="changePatientTab('contracoes')">Contrações</div>
+                                <div class="tab active" data-tab="consultas" onclick="changePatientTab('consultas')">Consultas</div>
+                                <div class="tab" data-tab="exames" onclick="changePatientTab('exames')">Exames</div>
+                                <div class="tab" data-tab="contracoes" onclick="changePatientTab('contracoes')">Contrações</div>
                             </div>
                             
-                            <div id="patientPeso" class="tab-content active">
-                                <div id="patientWeightHistory"></div>
-                            </div>
-                            <div id="patientConsultas" class="tab-content">
+                            <div id="patientConsultas" class="tab-content active">
                                 <div id="patientConsultHistory"></div>
-                            </div>
-                            <div id="patientVacinas" class="tab-content">
-                                <div id="patientVaccineHistory"></div>
                             </div>
                             <div id="patientExames" class="tab-content">
                                 <div id="patientExamsHistory"></div>
@@ -3209,11 +3201,8 @@
                     container.innerHTML = html;
                     hideLoading();
                     
-                    // Load patient weight history
-                    loadPatientWeightHistory(patientId);
-                    
-                    // Show patient details screen
-                    showScreen('screen22');
+                    // Load patient consult history
+                    loadPatientConsultHistory(patientId);
                 })
                 .catch(error => {
                     console.error("Erro ao carregar paciente: ", error);
@@ -3222,31 +3211,49 @@
                 });
         }
         
-        function loadPatientWeightHistory(patientId) {
-            const container = document.getElementById('patientWeightHistory');
-            container.innerHTML = '<p>Carregando histórico de peso...</p>';
+        function toggleEditMode() {
+            isEditMode = !isEditMode;
+            const editBtn = document.getElementById('editPatientBtn');
             
-            db.collection("usuarios").doc(patientId).collection("peso")
-                .orderBy("timestamp", "desc")
-                .get()
-                .then(querySnapshot => {
-                    if (querySnapshot.empty) {
-                        container.innerHTML = '<p>Nenhum registro encontrado.</p>';
-                        return;
-                    }
-                    
-                    let html = '<ul class="history-list">';
-                    querySnapshot.forEach(doc => {
-                        const data = doc.data();
-                        html += `<li class="list-item">${formatDate(data.date)} - ${data.weight} kg (IMC: ${data.bmi})</li>`;
-                    });
-                    html += '</ul>';
-                    
-                    container.innerHTML = html;
+            if (isEditMode) {
+                editBtn.textContent = 'Salvar';
+                document.querySelectorAll('.editable-field').forEach(field => {
+                    field.contentEditable = 'true';
+                    field.classList.add('editable-active');
+                });
+            } else {
+                editBtn.textContent = 'Editar';
+                document.querySelectorAll('.editable-field').forEach(field => {
+                    field.contentEditable = 'false';
+                    field.classList.remove('editable-active');
+                });
+                
+                // Save changes
+                savePatientChanges();
+            }
+        }
+        
+        function savePatientChanges() {
+            if (!currentPatientId) return;
+            
+            const updatedData = {
+                cpf: document.getElementById('patientCpf').textContent,
+                email: document.getElementById('patientEmail').textContent,
+                emergencyPhone: document.getElementById('patientPhone').textContent,
+                address: document.getElementById('patientAddress').textContent
+            };
+            
+            showLoading();
+            
+            db.collection("usuarios").doc(currentPatientId).update(updatedData)
+                .then(() => {
+                    hideLoading();
+                    alert('Dados do paciente atualizados com sucesso!');
                 })
                 .catch(error => {
-                    console.error("Erro ao carregar histórico de peso: ", error);
-                    container.innerHTML = '<p>Erro ao carregar histórico.</p>';
+                    console.error("Erro ao atualizar dados do paciente: ", error);
+                    hideLoading();
+                    alert('Erro ao atualizar dados. Tente novamente.');
                 });
         }
         
@@ -3254,16 +3261,13 @@
             document.querySelectorAll('#patientDetails .tab').forEach(t => t.classList.remove('active'));
             document.querySelectorAll('#patientDetails .tab-content').forEach(c => c.classList.remove('active'));
             
-            document.querySelector(`#patientDetails .tab[onclick="changePatientTab('${tab}')"]`).classList.add('active');
+            document.querySelector(`#patientDetails .tab[data-tab="${tab}"]`).classList.add('active');
             document.getElementById(`patient${tab.charAt(0).toUpperCase() + tab.slice(1)}`).classList.add('active');
             
             // Load data for the selected tab
             switch(tab) {
                 case 'consultas':
                     loadPatientConsultHistory(currentPatientId);
-                    break;
-                case 'vacinas':
-                    loadPatientVaccineHistory(currentPatientId);
                     break;
                 case 'exames':
                     loadPatientExamsHistory(currentPatientId);
@@ -3296,6 +3300,8 @@
                                 <div>Alt. uterina: ${data.uterineHeight || '-'}cm | BCF: ${data.fetalHeartbeat || '-'}</div>
                                 <div>Movimentação: ${data.fetalMovement || '-'}</div>
                                 <div>${data.notes || ''}</div>
+                                ${data.prescriptions ? `<div><strong>Medicações:</strong> ${data.prescriptions}</div>` : ''}
+                                ${data.nextConsultDate ? `<div><strong>Próxima consulta:</strong> ${formatDate(data.nextConsultDate)}</div>` : ''}
                             </li>
                         `;
                     });
@@ -3305,39 +3311,6 @@
                 })
                 .catch(error => {
                     console.error("Erro ao carregar histórico de consultas: ", error);
-                    container.innerHTML = '<p>Erro ao carregar histórico.</p>';
-                });
-        }
-        
-        function loadPatientVaccineHistory(patientId) {
-            const container = document.getElementById('patientVaccineHistory');
-            container.innerHTML = '<p>Carregando histórico de vacinas...</p>';
-            
-            db.collection("usuarios").doc(patientId).collection("vacinas")
-                .orderBy("timestamp", "desc")
-                .get()
-                .then(querySnapshot => {
-                    if (querySnapshot.empty) {
-                        container.innerHTML = '<p>Nenhum registro encontrado.</p>';
-                        return;
-                    }
-                    
-                    let html = '<ul class="history-list">';
-                    querySnapshot.forEach(doc => {
-                        const data = doc.data();
-                        html += `
-                            <li class="list-item">
-                                <strong>${data.name}</strong> (${data.type === 'gestante' ? 'Gestante' : 'Bebê'})
-                                <div>Data: ${formatDate(data.date)} | Dose: ${data.dose}</div>
-                            </li>
-                        `;
-                    });
-                    html += '</ul>';
-                    
-                    container.innerHTML = html;
-                })
-                .catch(error => {
-                    console.error("Erro ao carregar histórico de vacinas: ", error);
                     container.innerHTML = '<p>Erro ao carregar histórico.</p>';
                 });
         }
@@ -3466,31 +3439,6 @@
             imageModal.style.display = 'none';
         }
         
-        // Delete baby photo
-        function deletePhoto(photoId, fileName) {
-            if (!currentUser || !confirm('Tem certeza que deseja excluir esta foto?')) return;
-            
-            showLoading();
-            
-            // Delete from storage
-            const storageRef = storage.ref(`bebe_fotos/${currentUser.id}/${photoId}/${fileName}`);
-            storageRef.delete()
-                .then(() => {
-                    // Delete from Firestore
-                    return db.collection("usuarios").doc(currentUser.id)
-                        .collection("bebe_fotos").doc(photoId).delete();
-                })
-                .then(() => {
-                    hideLoading();
-                    displayBabyGallery();
-                })
-                .catch(error => {
-                    console.error("Erro ao excluir foto: ", error);
-                    hideLoading();
-                    alert('Erro ao excluir foto. Tente novamente.');
-                });
-        }
-        
         // Call emergency number
         function callNumber(number) {
             if (confirm(`Deseja ligar para ${number}?`)) {
@@ -3525,6 +3473,17 @@
         // Show app info
         function showAppInfo() {
             alert('Aplicativo desenvolvido pelo grupo de Inovação e Saúde 2025.1\n\nAutores:\nAna Paula Silveira Fonseca\nCamila Bruno da Silva\nDeivisson Alan Silva Santos\nGiovana Nogueira e Silva\nInara Almeida Simões\nLara Melo Lafetá\nMaria Thereza Flávio da Cruz\nRana Silva Victor\nSabrina Gonçalves Silva Pereira');
+        }
+        
+        // Change guidance tab
+        function changeGuidanceTab(tab) {
+            // Remove active class from all tabs and contents
+            document.querySelectorAll('#screen18 .tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('#screen18 .tab-content').forEach(content => content.classList.remove('active'));
+            
+            // Add active class to selected tab and content
+            document.querySelector(`#screen18 .tab[data-tab="${tab}"]`).classList.add('active');
+            document.getElementById(`${tab}Guidance`).classList.add('active');
         }
         
         // Show loading overlay
