@@ -22,8 +22,857 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        /* Estilos permanecem os mesmos */
-        /* ... (todos os estilos anteriores permanecem inalterados) ... */
+        :root {
+            --primary-color: #836FFF;
+            --secondary-color: #6A5ACD;
+            --background-color: #FFFFF0;
+            --text-color: #333333;
+            --light-gray: #f5f5f5;
+            --white: #ffffff;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+            --welcome-color: #E6E6FA;
+            --disabled-color: #e0e0e0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            touch-action: manipulation;
+            background-color: var(--background-color);
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow: hidden;
+            position: fixed;
+            width: 100%;
+            height: 100%;
+        }
+
+        .container {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            padding: 20px;
+            overflow-y: auto;
+            transform: translateX(100%);
+            opacity: 0;
+            transition: transform 0.4s ease, opacity 0.4s ease;
+            background-color: var(--background-color);
+            z-index: 1;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .screen.active {
+            transform: translateX(0);
+            opacity: 1;
+            z-index: 2;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            position: sticky;
+            top: 0;
+            background-color: var(--background-color);
+            z-index: 100;
+            padding: 15px 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.5rem;
+            color: var(--secondary-color);
+            font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 70%;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+            border-radius: 50%;
+        }
+
+        .btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 30px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            outline: none;
+        }
+
+        .btn:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-danger {
+            background-color: #e74c3c;
+        }
+
+        .btn-danger:hover {
+            background-color: #c0392b;
+        }
+
+        .btn-icon {
+            margin-right: 8px;
+        }
+
+        .card {
+            background-color: var(--white);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+        
+        .welcome-card {
+            background-color: var(--welcome-color);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: var(--secondary-color);
+            font-weight: 600;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: var(--text-color);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-family: 'Roboto', sans-serif;
+            transition: var(--transition);
+            font-size: 1rem;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(131, 111, 255, 0.2);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .menu-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+            background-color: var(--white);
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            color: var(--text-color);
+            min-height: 120px;
+            position: relative;
+        }
+
+        .menu-item:hover {
+            background-color: var(--primary-color);
+            color: white;
+            transform: translateY(-5px);
+        }
+
+        .menu-item.disabled {
+            background-color: var(--disabled-color);
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        .menu-item.disabled:hover {
+            background-color: var(--disabled-color);
+            transform: none;
+            color: var(--text-color);
+        }
+
+        .menu-item i {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .menu-item span {
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 3px 8px;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            vertical-align: middle;
+        }
+
+        .back-btn {
+            background: none;
+            border: none;
+            color: var(--primary-color);
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 5px;
+            margin-right: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .info-btn {
+            background: none;
+            border: none;
+            color: var(--primary-color);
+            font-size: 1.68rem; /* 40% maior */
+            cursor: pointer;
+            padding: 5px;
+            margin-right: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .doctor-btn {
+            background: none;
+            border: none;
+            color: var(--primary-color);
+            font-size: 1.68rem; /* 40% maior */
+            cursor: pointer;
+            padding: 5px;
+            margin-right: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+        }
+
+        .tabs::-webkit-scrollbar {
+            display: none;
+        }
+
+        .tab {
+            padding: 10px 15px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: var(--transition);
+            white-space: nowrap;
+        }
+
+        .tab.active {
+            border-bottom: 3px solid var(--primary-color);
+            color: var(--primary-color);
+            font-weight: 500;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .list-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .list-item:last-child {
+            border-bottom: none;
+        }
+
+        .emergency-number {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background-color: var(--light-gray);
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        .emergency-number i {
+            color: var(--primary-color);
+            margin-right: 15px;
+            font-size: 1.5rem;
+        }
+
+        .emergency-info h3 {
+            font-size: 1rem;
+            margin-bottom: 5px;
+        }
+
+        .emergency-info p {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 300px;
+            margin-top: 20px;
+        }
+
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 24px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: var(--primary-color);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 5px;
+            flex-wrap: wrap;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+        }
+
+        .radio-option input {
+            margin-right: 5px;
+        }
+
+        .date-time-inputs {
+            display: flex;
+            gap: 10px;
+        }
+
+        .date-time-inputs .form-control {
+            flex: 1;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .contraction-timer {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .timer-display {
+            font-size: 2.5rem;
+            font-family: 'Montserrat', sans-serif;
+            margin: 15px 0;
+        }
+
+        .contraction-list {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-top: 20px;
+        }
+
+        .history-list {
+            margin-top: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .file-preview {
+            max-width: 100%;
+            max-height: 200px;
+            margin-top: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 5px;
+        }
+
+        /* Galeria de fotos */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .gallery-item {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            height: 120px;
+            cursor: pointer;
+            box-shadow: 0 3px 5px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f0f0f0;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+
+        .gallery-item .delete-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: rgba(0,0,0,0.5);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .add-photo {
+            background-color: #e0e0e0;
+            border: 2px dashed #836FFF;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .add-photo i {
+            font-size: 2rem;
+            color: #836FFF;
+        }
+
+        /* Modal de visualização de imagem */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            max-width: 90%;
+            max-height: 90%;
+            display: block;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: white;
+            font-size: 40px;
+            cursor: pointer;
+        }
+
+        /* Tela de login médico */
+        .login-card {
+            max-width: 400px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+        }
+
+        /* Lista de pacientes */
+        .patient-list {
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .patient-item {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .patient-item:hover {
+            background-color: #f9f9f9;
+        }
+
+        .patient-name {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .patient-details {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* Botões do cabeçalho */
+        .header-buttons {
+            display: flex;
+            align-items: center;
+        }
+
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+                gap: 10px;
+            }
+            
+            .header h1 {
+                font-size: 1.3rem;
+            }
+            
+            .card-title {
+                font-size: 1.1rem;
+            }
+            
+            .btn {
+                padding: 10px 16px;
+                font-size: 0.9rem;
+            }
+            
+            .container {
+                padding: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .grid {
+                grid-template-columns: repeat(2, 1fr));
+            }
+            
+            .header h1 {
+                font-size: 1.1rem;
+            }
+            
+            .card {
+                padding: 15px;
+            }
+            
+            .form-control {
+                padding: 10px 12px;
+            }
+        }
+
+        /* PWA specific styles */
+        .install-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 30px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            display: none;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .install-btn.show {
+            display: block;
+        }
+        
+        /* Loading overlay */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.3s ease;
+        }
+        
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(106, 90, 205, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--primary-color);
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Form validation */
+        .invalid-feedback {
+            color: #e74c3c;
+            font-size: 0.85rem;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        .form-control.is-invalid {
+            border-color: #e74c3c;
+        }
+        
+        .form-control.is-invalid + .invalid-feedback {
+            display: block;
+        }
+        
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary-color);
+            border-radius: 3px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--secondary-color);
+        }
+        
+        /* Offline indicator */
+        .offline-indicator {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #e74c3c;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            z-index: 1001;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+        
+        .offline-indicator.show {
+            transform: translateY(0);
+        }
+        
+        /* Splash screen */
+        .splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #836FFF 0%, #6A5ACD 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            transition: opacity 0.5s ease;
+        }
+        
+        .splash-logo {
+            width: 120px;
+            height: 120px;
+            background-color: white;
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .splash-logo img {
+            width: 80px;
+            height: 80px;
+        }
+        
+        .splash-title {
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        
+        .splash-subtitle {
+            color: rgba(255,255,255,0.8);
+            font-size: 1rem;
+            max-width: 80%;
+            text-align: center;
+            line-height: 1.5;
+        }
+        
+        .splash-progress {
+            width: 200px;
+            height: 4px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 2px;
+            margin-top: 30px;
+            overflow: hidden;
+        }
+        
+        .splash-progress-bar {
+            height: 100%;
+            background-color: white;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        
+        /* Content area with fixed header */
+        .screen-content {
+            padding-top: 70px;
+            height: calc(100% - 70px);
+            overflow-y: auto;
+        }
     </style>
 </head>
 <body>
@@ -52,12 +901,180 @@
         
         <!-- Tela 1: Cadastro Inicial -->
         <div id="screen1" class="screen active">
-            <!-- ... (conteúdo inalterado) ... -->
+            <div class="header">
+                <div class="logo">
+                    <img src="https://i.imgur.com/p3ohnA9.png" alt="Logo">
+                    <h1>Caderneta da Gestante</h1>
+                </div>
+            </div>
+            
+            <div class="screen-content">
+                <div class="card">
+                    <h2 class="card-title">Cadastro da Gestante</h2>
+                    <p>Preencha seus dados para começar a usar o aplicativo</p>
+                    
+                    <form id="registrationForm">
+                        <div class="form-group">
+                            <label for="fullName">Nome Completo</label>
+                            <input type="text" id="fullName" class="form-control" required>
+                            <div class="invalid-feedback">Por favor, insira seu nome completo</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="birthDate">Data de Nascimento</label>
+                            <input type="date" id="birthDate" class="form-control" required>
+                            <div class="invalid-feedback">Por favor, insira sua data de nascimento</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="cpf">CPF</label>
+                            <input type="text" id="cpf" class="form-control" required>
+                            <div class="invalid-feedback">Por favor, insira um CPF válido</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="susCard">Cartão SUS</label>
+                            <input type="text" id="susCard" class="form-control" required>
+                            <div class="invalid-feedback">Por favor, insira o número do cartão SUS</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" class="form-control" required>
+                            <div class="invalid-feedback">Por favor, insira um email válido</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="occupation">Ocupação</label>
+                            <input type="text" id="occupation" class="form-control" required>
+                            <div class="invalid-feedback">Por favor, insira sua ocupação</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="address">Endereço</label>
+                            <input type="text" id="address" class="form-control" required>
+                            <div class="invalid-feedback">Por favor, insira seu endereço</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="emergencyPhone">Telefone de Emergência</label>
+                            <input type="tel" id="emergencyPhone" class="form-control" required>
+                            <div class="invalid-feedback">Por favor, insira um telefone válido</div>
+                        </div>
+                        
+                        <button type="submit" class="btn">
+                            <i class="material-icons btn-icon">how_to_reg</i>
+                            Cadastrar
+                        </button>
+                    </form>
+                </div>
+            </div>
         </div>
 
         <!-- Tela 2: Menu Principal -->
         <div id="screen2" class="screen">
-            <!-- ... (conteúdo inalterado) ... -->
+            <div class="header">
+                <h1>Menu Principal</h1>
+                <div class="header-buttons">
+                    <button class="info-btn" onclick="showAppInfo()">
+                        <i class="material-icons">info</i>
+                    </button>
+                    <button class="doctor-btn" onclick="showScreen('screen20')">
+                        <i class="material-icons">local_hospital</i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="screen-content">
+                <div class="card welcome-card">
+                    <div id="userGreeting">
+                        <h2 class="card-title">Olá, <span id="userName"></span>!</h2>
+                        <p>Seja bem-vinda ao seu acompanhamento gestacional</p>
+                    </div>
+                </div>
+                
+                <div class="grid">
+                    <a href="#" class="menu-item" onclick="showScreen('screen3')">
+                        <i class="material-icons">person</i>
+                        <span>Dados da Gestante</span>
+                    </a>
+                    
+                    <a href="#" class="menu-item" onclick="showScreen('screen4')">
+                        <i class="material-icons">phone</i>
+                        <span>Telefones Úteis</span>
+                    </a>
+                    
+                    <a href="#" class="menu-item disabled" onclick="handleBetaCard()">
+                        <i class="material-icons">calendar_today</i>
+                        <span>Agendamentos <span class="badge">Beta</span></span>
+                    </a>
+                    
+                    <a href="#" class="menu-item" onclick="showScreen('screen6')">
+                        <i class="material-icons">gavel</i>
+                        <span>Conheça Seus Direitos</span>
+                    </a>
+                    
+                    <a href="#" class="menu-item" onclick="showScreen('screen8')">
+                        <i class="material-icons">monitor_weight</i>
+                        <span>Monitoramento de Peso</span>
+                    </a>
+                    
+                    <a href="#" class="menu-item disabled" onclick="handleBetaCard()">
+                        <i class="material-icons">medical_services</i>
+                        <span>Consulta Odontológica <span class="badge">Beta</span></span>
+                    </a>
+                    
+                    <a href="#" class="menu-item" onclick="showScreen('screen10')">
+                        <i class="material-icons">pregnant_woman</i>
+                        <span>Consulta da Gestante</span>
+                    </a>
+                    
+                    <a href="#" class="menu-item" onclick="showScreen('screen11')">
+                        <i class="material-icons">vaccines</i>
+                        <span>Cartão de Vacina</span>
+                    </a>
+                    
+                    <a href="#" class="menu-item" onclick="showScreen('screen12')">
+                        <i class="material-icons">science</i>
+                        <span>Exames Laboratoriais</span>
+                    </a>
+                    
+                    <a href="#" class="menu-item" onclick="showScreen('screen13')">
+                        <i class="material-icons">image</i>
+                        <span>Exames de Imagem</span>
+                    </a>
+                    
+                    <a href="#" class="menu-item" onclick="showScreen('screen14')">
+                        <i class="material-icons">medication</i>
+                        <span>Suplementação</span>
+                    </a>
+                    
+                    <a href="#" class="menu-item disabled" onclick="handleBetaCard()">
+                        <i class="material-icons">notifications</i>
+                        <span>Lembretes <span class="badge">Beta</span></span>
+                    </a>
+                    
+                    <a href="#" class="menu-item" onclick="showScreen('screen16')">
+                        <i class="material-icons">timer</i>
+                        <span>Trabalho de Parto</span>
+                    </a>
+                    
+                    <a href="#" class="menu-item" onclick="showScreen('screen17')">
+                        <i class="material-icons">child_care</i>
+                        <span>Meu Bebê</span>
+                    </a>
+                    
+                    <a href="#" class="menu-item" onclick="showScreen('screen18')">
+                        <i class="material-icons">menu_book</i>
+                        <span>Orientações Gerais</span>
+                    </a>
+                    
+                    <a href="#" class="menu-item" onclick="showScreen('screen19')">
+                        <i class="material-icons">edit</i>
+                        <span>Diário da Gestante</span>
+                    </a>
+                </div>
+            </div>
         </div>
 
         <!-- Tela 3: Dados da Gestante -->
@@ -73,7 +1090,7 @@
                 <div class="card">
                     <form id="gestanteForm">
                         <div class="form-group">
-                            <label for="displayName">Nome Completo</label>
+                            <label for="displayName">Nome</label>
                             <input type="text" id="displayName" class="form-control">
                         </div>
                         
@@ -164,30 +1181,95 @@
 
         <!-- Tela 4: Telefones Úteis -->
         <div id="screen4" class="screen">
-            <!-- ... (conteúdo inalterado) ... -->
+            <div class="header">
+                <button class="back-btn" onclick="showScreen('screen2')">
+                    <i class="material-icons">arrow_back</i>
+                </button>
+                <h1>Telefones Úteis</h1>
+            </div>
+            
+            <div class="screen-content">
+                <div class="card">
+                    <div class="emergency-number" onclick="callNumber('192')">
+                        <i class="material-icons">local_hospital</i>
+                        <div class="emergency-info">
+                            <h3>SAMU</h3>
+                            <p>192</p>
+                        </div>
+                    </div>
+                    
+                    <div class="emergency-number" onclick="callNumber('136')">
+                        <i class="material-icons">hearing</i>
+                        <div class="emergency-info">
+                            <h3>Ouvidoria Geral do SUS</h3>
+                            <p>136</p>
+                        </div>
+                    </div>
+                    
+                    <div class="emergency-number" onclick="callNumber('190')">
+                        <i class="material-icons">security</i>
+                        <div class="emergency-info">
+                            <h3>Polícia Militar</h3>
+                            <p>190</p>
+                        </div>
+                    </div>
+                    
+                    <div class="emergency-number" onclick="callNumber('180')">
+                        <i class="material-icons">woman</i>
+                        <div class="emergency-info">
+                            <h3>Central de Atendimento à Mulher</h3>
+                            <p>180</p>
+                        </div>
+                    </div>
+                    
+                    <div class="emergency-number" onclick="callNumber('193')">
+                        <i class="material-icons">fire_truck</i>
+                        <div class="emergency-info">
+                            <h3>Corpo de Bombeiros</h3>
+                            <p>193</p>
+                        </div>
+                    </div>
+                    
+                    <div class="emergency-number" onclick="callNumber('100')">
+                        <i class="material-icons">child_friendly</i>
+                        <div class="emergency-info">
+                            <h3>Disque Denúncia Nacional</h3>
+                            <p>100</p>
+                        </div>
+                    </div>
+                    
+                    <div class="emergency-number" onclick="callNumber('0800611997')">
+                        <i class="material-icons">smoke_free</i>
+                        <div class="emergency-info">
+                            <h3>Disque Parar de Fumar</h3>
+                            <p>0800 611 997</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <!-- Tela 6: Conheça Seus Direitos -->
+        <!-- Tela 6: Conheça seus direitos -->
         <div id="screen6" class="screen">
             <div class="header">
                 <button class="back-btn" onclick="showScreen('screen2')">
                     <i class="material-icons">arrow_back</i>
                 </button>
-                <h1>Conheça Seus Direitos</h1>
+                <h1>Conheça seus direitos</h1>
             </div>
             
             <div class="screen-content">
                 <div class="card">
                     <h3 class="card-title">Direitos da Gestante</h3>
-                    <p>Como gestante, você tem direitos garantidos por lei. Conheça alguns deles:</p>
+                    <p>Toda gestante tem direitos assegurados por lei. Conheça os principais:</p>
                     <ul style="margin: 15px 0; padding-left: 20px;">
-                        <li><strong>Pré-natal humanizado:</strong> Direito a atendimento digno e respeitoso durante toda a gestação.</li>
-                        <li><strong>Licença-maternidade:</strong> Direito a 120 dias de afastamento remunerado do trabalho.</li>
-                        <li><strong>Estabilidade no emprego:</strong> A gestante não pode ser demitida sem justa causa desde a confirmação da gravidez até 5 meses após o parto.</li>
-                        <li><strong>Isenção de impostos:</strong> Em alguns estados, isenção de ICMS na compra de enxoval para o bebê.</li>
-                        <li><strong>Atendimento prioritário:</strong> Direito a atendimento preferencial em filas e assentos preferenciais em transportes públicos.</li>
-                        <li><strong>Saúde gratuita:</strong> Direito ao atendimento gratuito no SUS durante toda a gestação, parto e pós-parto.</li>
-                        <li><strong>Amamentação:</strong> Direito a intervalos durante a jornada de trabalho para amamentação até o bebê completar 6 meses.</li>
+                        <li><strong>Pré-natal:</strong> Direito a no mínimo 6 consultas de pré-natal, com exames básicos.</li>
+                        <li><strong>Parto humanizado:</strong> Direito a um parto humanizado e respeito às suas escolhas.</li>
+                        <li><strong>Acompanhante:</strong> Direito a um acompanhante durante o trabalho de parto, parto e pós-parto.</li>
+                        <li><strong>Licença-maternidade:</strong> Direito a 120 dias de licença-maternidade, com estabilidade no emprego.</li>
+                        <li><strong>Amamentação:</strong> Direito a amamentar o bebê logo após o nascimento.</li>
+                        <li><strong>Transporte público:</strong> Em algumas cidades, grávidas têm direito a transporte público gratuito.</li>
+                        <li><strong>Saúde bucal:</strong> Direito a atendimento odontológico durante a gestação.</li>
                     </ul>
                     <p>Para mais informações, consulte o site do Ministério da Saúde ou a Secretaria de Saúde do seu município.</p>
                 </div>
@@ -460,7 +1542,35 @@
 
         <!-- Tela 14: Suplementação -->
         <div id="screen14" class="screen">
-            <!-- ... (conteúdo inalterado) ... -->
+            <div class="header">
+                <button class="back-btn" onclick="showScreen('screen2')">
+                    <i class="material-icons">arrow_back</i>
+                </button>
+                <h1>Suplementação</h1>
+            </div>
+            
+            <div class="screen-content">
+                <div class="card">
+                    <h3 class="card-title">Suplementação na Gestação</h3>
+                    <p>Segundo o Ministério da Saúde, é recomendado:</p>
+                    <ul style="margin: 15px 0; padding-left: 20px;">
+                        <li><strong>Ácido Fólico:</strong> 400 mcg por dia, desde o planejamento da gravidez até a 12ª semana de gestação.</li>
+                        <li><strong>Ferro:</strong> Suplementação diária de ferro a partir da 20ª semana até o final da gestação. A dose é de 40 mg de ferro elementar por dia.</li>
+                        <li><strong>Cálcio:</strong> Recomenda-se a ingestão de 1.000 mg por dia. Em casos de ingestão insuficiente, pode ser necessária suplementação.</li>
+                        <li><strong>Vitamina D:</strong> A suplementação pode ser necessária em casos de deficiência comprovada.</li>
+                    </ul>
+                    <p>Além disso, é importante manter uma alimentação equilibrada e rica em nutrientes.</p>
+                    
+                    <h3 class="card-title" style="margin-top: 20px;">Suplementação Infantil</h3>
+                    <p>Para bebês e crianças, o Ministério da Saúde recomenda:</p>
+                    <ul style="margin: 15px 0; padding-left: 20px;">
+                        <li><strong>Vitamina A:</strong> Suplementação para crianças de 6 a 59 meses em áreas de risco.</li>
+                        <li><strong>Ferro:</strong> Suplementação a partir do 6º mês de vida para prevenir anemia.</li>
+                        <li><strong>Vitamina D:</strong> Recomendada para todos os bebês a partir do nascimento, especialmente os amamentados exclusivamente.</li>
+                        <li><strong>Zinco:</strong> Importante para o sistema imunológico e crescimento.</li>
+                    </ul>
+                </div>
+            </div>
         </div>
 
         <!-- Tela 16: Monitoramento do Trabalho de Parto -->
@@ -544,7 +1654,69 @@
 
         <!-- Tela 18: Orientações Gerais -->
         <div id="screen18" class="screen">
-            <!-- ... (conteúdo inalterado) ... -->
+            <div class="header">
+                <button class="back-btn" onclick="showScreen('screen2')">
+                    <i class="material-icons">arrow_back</i>
+                </button>
+                <h1>Orientações Gerais</h1>
+            </div>
+            
+            <div class="screen-content">
+                <div class="card">
+                    <div class="tabs">
+                        <div class="tab active" onclick="changeGuidanceTab('discovery')">Descoberta</div>
+                        <div class="tab" onclick="changeGuidanceTab('firstTrimester')">1º Trimestre</div>
+                        <div class="tab" onclick="changeGuidanceTab('secondTrimester')">2º Trimestre</div>
+                        <div class="tab" onclick="changeGuidanceTab('thirdTrimester')">3º Trimestre</div>
+                    </div>
+                    
+                    <div id="discoveryGuidance" class="tab-content active">
+                        <h3 class="card-title">DESCOBERTA DA GRAVIDEZ</h3>
+                        <p>A descoberta da gravidez é um momento único e especial. Algumas orientações importantes:</p>
+                        <ul style="margin: 15px 0; padding-left: 20px;">
+                            <li>Agende sua primeira consulta de pré-natal o mais breve possível</li>
+                            <li>Inicie a suplementação com ácido fólico, se ainda não tiver começado</li>
+                            <li>Evite o consumo de álcool, cigarro e outras drogas</li>
+                            <li>Mantenha uma alimentação saudável e equilibrada</li>
+                            <li>Informe-se sobre os seus direitos como gestante</li>
+                        </ul>
+                    </div>
+                    
+                    <div id="firstTrimesterGuidance" class="tab-content">
+                        <h3 class="card-title">OS TRÊS PRIMEIROS MESES DA GESTAÇÃO</h3>
+                        <p>O primeiro trimestre é crucial para o desenvolvimento do bebê:</p>
+                        <ul style="margin: 15px 0; padding-left: 20px;">
+                            <li>É comum sentir náuseas e cansaço - descanse sempre que possível</li>
+                            <li>Faça todas as consultas e exames do pré-natal</li>
+                            <li>Evite alimentos crus ou mal cozidos para prevenir infecções</li>
+                            <li>Beba bastante água e mantenha-se hidratada</li>
+                            <li>O coração do bebê começa a bater por volta da 6ª semana</li>
+                        </ul>
+                    </div>
+                    
+                    <div id="secondTrimesterGuidance" class="tab-content">
+                        <h3 class="card-title">DO QUARTO AO SEXTO MÊS</h3>
+                        <p>O segundo trimestre é geralmente o mais confortável:</p>
+                        <ul style="margin: 15px 0; padding-left: 20px;">
+                            <li>As náuseas geralmente diminuem ou desaparecem</li>
+                            <li>Você começará a sentir os movimentos do bebê (por volta da 18ª-20ª semana)</li>
+                            <li>Sua barriga ficará mais visível - use roupas confortáveis</li>
+                            <li>Faça exercícios leves recomendados pelo seu médico</li>
+                        </ul>
+                    </div>
+                    
+                    <div id="thirdTrimesterGuidance" class="tab-content">
+                        <h3 class="card-title">DO SÉTIMO AO NONO MÊS</h3>
+                        <p>O terceiro trimestre prepara para o parto:</p>
+                        <ul style="margin: 15px 0; padding-left: 20px;">
+                            <li>O cansaço pode retornar - descanse sempre que possível</li>
+                            <li>Os movimentos do bebê podem mudar de padrão</li>
+                            <li>Prepare o enxoval e a mala para a maternidade</li>
+                            <li>Converse com seu médico sobre o plano de parto</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- Tela 19: Diário da Gestante -->
@@ -848,9 +2020,6 @@
 
             // Load history for specific screens
             switch(screenId) {
-                case 'screen6':
-                    // Nada específico para carregar
-                    break;
                 case 'screen8':
                     displayWeightHistory();
                     break;
@@ -873,6 +2042,7 @@
                     displayBabyGallery();
                     break;
                 case 'screen18':
+                    // Garantir que a aba ativa seja mostrada
                     changeGuidanceTab('discovery');
                     break;
                 case 'screen19':
@@ -946,24 +2116,13 @@
             document.getElementById('userName').textContent = currentUser.fullName.split(' ')[0];
             
             // Screen 3 - Gestante Data
-            document.getElementById('displayName').value = currentUser.fullName || '';
-            document.getElementById('displayBirthDate').value = currentUser.birthDate || '';
-            document.getElementById('displayAge').value = calculateAge(currentUser.birthDate) || '';
-            document.getElementById('partnerName').value = currentUser.partnerName || '';
-            document.getElementById('displayOccupation').value = currentUser.occupation || '';
-            document.getElementById('displayAddress').value = currentUser.address || '';
-            document.getElementById('displaySusCard').value = currentUser.susCard || '';
-            document.getElementById('nisCard').value = currentUser.nisCard || '';
-            document.getElementById('displayEmergencyPhone').value = currentUser.emergencyPhone || '';
-            
-            // Set radio buttons
-            if (currentUser.race) {
-                document.querySelector(`input[name="race"][value="${currentUser.race}"]`).checked = true;
-            }
-            
-            if (currentUser.worksOutside) {
-                document.querySelector(`input[name="worksOutside"][value="${currentUser.worksOutside}"]`).checked = true;
-            }
+            document.getElementById('displayName').value = currentUser.fullName;
+            document.getElementById('displayBirthDate').value = currentUser.birthDate;
+            document.getElementById('displayAge').value = calculateAge(currentUser.birthDate);
+            document.getElementById('displayOccupation').value = currentUser.occupation;
+            document.getElementById('displayAddress').value = currentUser.address;
+            document.getElementById('displaySusCard').value = currentUser.susCard;
+            document.getElementById('displayEmergencyPhone').value = currentUser.emergencyPhone;
         }
         
         // Format date to Brazilian format
@@ -1021,8 +2180,12 @@
             db.collection("usuarios").doc(currentUser.id).update(updatedData)
             .then(() => {
                 // Update local user data
-                currentUser = {...currentUser, ...updatedData};
+                currentUser = { ...currentUser, ...updatedData };
                 localStorage.setItem('gestanteUser', JSON.stringify(currentUser));
+                
+                // Update age display
+                document.getElementById('displayAge').value = calculateAge(updatedData.birthDate);
+                
                 hideLoading();
                 alert('Dados atualizados com sucesso!');
             })
@@ -1080,7 +2243,6 @@
                 .then(() => {
                     hideLoading();
                     alert('Peso registrado com sucesso!');
-                    document.getElementById('weightForm').reset();
                     displayWeightHistory();
                 })
                 .catch(error => {
@@ -1111,10 +2273,8 @@
                         const data = doc.data();
                         html += `
                             <li class="list-item">
-                                <div>
-                                    <strong>${formatDate(data.date)}</strong> - ${data.weight} kg
-                                </div>
-                                <button class="btn btn-danger" onclick="deleteWeightRecord('${doc.id}')">
+                                <div>${formatDate(data.date)} - ${data.weight} kg</div>
+                                <button class="btn btn-danger" onclick="deleteRecord('peso', '${doc.id}')">
                                     <i class="material-icons">delete</i>
                                 </button>
                             </li>
@@ -1130,24 +2290,6 @@
                 .catch(error => {
                     console.error("Erro ao carregar histórico de peso: ", error);
                     container.innerHTML = '<p>Erro ao carregar histórico.</p>';
-                });
-        }
-        
-        // Delete weight record
-        function deleteWeightRecord(recordId) {
-            if (!currentUser || !confirm('Tem certeza que deseja excluir este registro?')) return;
-            
-            showLoading();
-            
-            db.collection("usuarios").doc(currentUser.id).collection("peso").doc(recordId).delete()
-                .then(() => {
-                    hideLoading();
-                    displayWeightHistory();
-                })
-                .catch(error => {
-                    console.error("Erro ao excluir registro de peso: ", error);
-                    hideLoading();
-                    alert('Erro ao excluir registro. Tente novamente.');
                 });
         }
         
@@ -1233,7 +2375,6 @@
                 .then(() => {
                     hideLoading();
                     alert('Consulta registrada com sucesso!');
-                    document.getElementById('pregnancyForm').reset();
                     displayConsultHistory();
                 })
                 .catch(error => {
@@ -1270,7 +2411,7 @@
                                     <div>Movimentação: ${data.fetalMovement || '-'}</div>
                                     <div>${data.notes || ''}</div>
                                 </div>
-                                <button class="btn btn-danger" onclick="deleteConsultRecord('${doc.id}')">
+                                <button class="btn btn-danger" onclick="deleteRecord('consultas', '${doc.id}')">
                                     <i class="material-icons">delete</i>
                                 </button>
                             </li>
@@ -1283,24 +2424,6 @@
                 .catch(error => {
                     console.error("Erro ao carregar histórico de consultas: ", error);
                     container.innerHTML = '<p>Erro ao carregar histórico.</p>';
-                });
-        }
-        
-        // Delete consult record
-        function deleteConsultRecord(recordId) {
-            if (!currentUser || !confirm('Tem certeza que deseja excluir este registro?')) return;
-            
-            showLoading();
-            
-            db.collection("usuarios").doc(currentUser.id).collection("consultas").doc(recordId).delete()
-                .then(() => {
-                    hideLoading();
-                    displayConsultHistory();
-                })
-                .catch(error => {
-                    console.error("Erro ao excluir registro de consulta: ", error);
-                    hideLoading();
-                    alert('Erro ao excluir registro. Tente novamente.');
                 });
         }
         
@@ -1326,7 +2449,6 @@
                 .then(() => {
                     hideLoading();
                     alert('Vacina registrada com sucesso!');
-                    document.getElementById(isBaby ? 'babyVaccineForm' : 'vaccineForm').reset();
                     displayVaccineHistory();
                 })
                 .catch(error => {
@@ -1361,7 +2483,7 @@
                                     <strong>${data.name}</strong> (${data.type === 'gestante' ? 'Gestante' : 'Bebê'})
                                     <div>Data: ${formatDate(data.date)} | Dose: ${data.dose}</div>
                                 </div>
-                                <button class="btn btn-danger" onclick="deleteVaccineRecord('${doc.id}')">
+                                <button class="btn btn-danger" onclick="deleteRecord('vacinas', '${doc.id}')">
                                     <i class="material-icons">delete</i>
                                 </button>
                             </li>
@@ -1374,24 +2496,6 @@
                 .catch(error => {
                     console.error("Erro ao carregar histórico de vacinas: ", error);
                     container.innerHTML = '<p>Erro ao carregar histórico.</p>';
-                });
-        }
-        
-        // Delete vaccine record
-        function deleteVaccineRecord(recordId) {
-            if (!currentUser || !confirm('Tem certeza que deseja excluir este registro?')) return;
-            
-            showLoading();
-            
-            db.collection("usuarios").doc(currentUser.id).collection("vacinas").doc(recordId).delete()
-                .then(() => {
-                    hideLoading();
-                    displayVaccineHistory();
-                })
-                .catch(error => {
-                    console.error("Erro ao excluir registro de vacina: ", error);
-                    hideLoading();
-                    alert('Erro ao excluir registro. Tente novamente.');
                 });
         }
         
@@ -1455,8 +2559,8 @@
                     localStorage.setItem(`labExams_${currentUser.id}`, JSON.stringify(exams));
                     hideLoading();
                     alert('Exame registrado com sucesso!');
-                    document.getElementById('labExamForm').reset();
                     displayLabExamsHistory();
+                    document.getElementById('labExamForm').reset();
                 })
                 .catch(error => {
                     console.error("Erro ao processar arquivos: ", error);
@@ -1503,7 +2607,7 @@
                 html += `
                             </div>
                         </div>
-                        <button class="btn btn-danger" onclick="deleteLabExamRecord(${exam.id})">
+                        <button class="btn btn-danger" onclick="deleteLabExam(${exam.id})">
                             <i class="material-icons">delete</i>
                         </button>
                     </li>
@@ -1512,16 +2616,6 @@
             html += '</ul>';
             
             container.innerHTML = html;
-        }
-
-        // Delete lab exam record
-        function deleteLabExamRecord(examId) {
-            if (!currentUser || !confirm('Tem certeza que deseja excluir este exame?')) return;
-            
-            const exams = JSON.parse(localStorage.getItem(`labExams_${currentUser.id}`)) || [];
-            const updatedExams = exams.filter(exam => exam.id !== examId);
-            localStorage.setItem(`labExams_${currentUser.id}`, JSON.stringify(updatedExams));
-            displayLabExamsHistory();
         }
 
         // Save image exam
@@ -1574,8 +2668,8 @@
                     localStorage.setItem(`imageExams_${currentUser.id}`, JSON.stringify(exams));
                     hideLoading();
                     alert('Exame registrado com sucesso!');
-                    document.getElementById('imageExamForm').reset();
                     displayImageExamsHistory();
+                    document.getElementById('imageExamForm').reset();
                 })
                 .catch(error => {
                     console.error("Erro ao processar imagens: ", error);
@@ -1618,7 +2712,7 @@
                 html += `
                             </div>
                         </div>
-                        <button class="btn btn-danger" onclick="deleteImageExamRecord(${exam.id})">
+                        <button class="btn btn-danger" onclick="deleteImageExam(${exam.id})">
                             <i class="material-icons">delete</i>
                         </button>
                     </li>
@@ -1627,16 +2721,6 @@
             html += '</ul>';
             
             container.innerHTML = html;
-        }
-        
-        // Delete image exam record
-        function deleteImageExamRecord(examId) {
-            if (!currentUser || !confirm('Tem certeza que deseja excluir este exame?')) return;
-            
-            const exams = JSON.parse(localStorage.getItem(`imageExams_${currentUser.id}`)) || [];
-            const updatedExams = exams.filter(exam => exam.id !== examId);
-            localStorage.setItem(`imageExams_${currentUser.id}`, JSON.stringify(updatedExams));
-            displayImageExamsHistory();
         }
         
         // Start contraction timer
@@ -1741,7 +2825,6 @@
                     hideLoading();
                     resetContractionTimer();
                     alert('Contração registrada com sucesso!');
-                    document.getElementById('contractionForm').reset();
                     displayContractionHistory();
                 })
                 .catch(error => {
@@ -1776,7 +2859,7 @@
                                     <strong>${data.startTime}</strong> a <strong>${data.endTime}</strong>
                                     <div>Duração: ${data.duration} | Intensidade: ${data.intensity}</div>
                                 </div>
-                                <button class="btn btn-danger" onclick="deleteContractionRecord('${doc.id}')">
+                                <button class="btn btn-danger" onclick="deleteRecord('contracoes', '${doc.id}')">
                                     <i class="material-icons">delete</i>
                                 </button>
                             </li>
@@ -1789,24 +2872,6 @@
                 .catch(error => {
                     console.error("Erro ao carregar histórico de contrações: ", error);
                     container.innerHTML = '<p>Erro ao carregar histórico.</p>';
-                });
-        }
-        
-        // Delete contraction record
-        function deleteContractionRecord(recordId) {
-            if (!currentUser || !confirm('Tem certeza que deseja excluir este registro?')) return;
-            
-            showLoading();
-            
-            db.collection("usuarios").doc(currentUser.id).collection("contracoes").doc(recordId).delete()
-                .then(() => {
-                    hideLoading();
-                    displayContractionHistory();
-                })
-                .catch(error => {
-                    console.error("Erro ao excluir registro de contração: ", error);
-                    hideLoading();
-                    alert('Erro ao excluir registro. Tente novamente.');
                 });
         }
         
@@ -1831,7 +2896,6 @@
                 .then(() => {
                     hideLoading();
                     alert('Registro do diário salvo com sucesso!');
-                    document.getElementById('diaryForm').reset();
                     displayDiaryHistory();
                 })
                 .catch(error => {
@@ -1868,7 +2932,7 @@
                                     <div>Sintomas: ${data.symptoms || '-'}</div>
                                     <div>Dúvidas: ${data.questions || '-'}</div>
                                 </div>
-                                <button class="btn btn-danger" onclick="deleteDiaryRecord('${doc.id}')">
+                                <button class="btn btn-danger" onclick="deleteRecord('diario', '${doc.id}')">
                                     <i class="material-icons">delete</i>
                                 </button>
                             </li>
@@ -1881,24 +2945,6 @@
                 .catch(error => {
                     console.error("Erro ao carregar histórico do diário: ", error);
                     container.innerHTML = '<p>Erro ao carregar histórico.</p>';
-                });
-        }
-        
-        // Delete diary record
-        function deleteDiaryRecord(recordId) {
-            if (!currentUser || !confirm('Tem certeza que deseja excluir este registro?')) return;
-            
-            showLoading();
-            
-            db.collection("usuarios").doc(currentUser.id).collection("diario").doc(recordId).delete()
-                .then(() => {
-                    hideLoading();
-                    displayDiaryHistory();
-                })
-                .catch(error => {
-                    console.error("Erro ao excluir registro do diário: ", error);
-                    hideLoading();
-                    alert('Erro ao excluir registro. Tente novamente.');
                 });
         }
         
@@ -2108,14 +3154,6 @@
                                     <i class="material-icons btn-icon">pregnant_woman</i>
                                     Consultas da Gestante
                                 </button>
-                                <button class="btn" onclick="showPatientScreen('screen11')" style="margin-top: 10px;">
-                                    <i class="material-icons btn-icon">vaccines</i>
-                                    Cartão de Vacina
-                                </button>
-                                <button class="btn" onclick="showPatientScreen('screen12')" style="margin-top: 10px;">
-                                    <i class="material-icons btn-icon">science</i>
-                                    Exames Laboratoriais
-                                </button>
                             </div>
                         </div>
                     `;
@@ -2262,6 +3300,68 @@
             setTimeout(() => {
                 loadingOverlay.style.display = 'none';
             }, 300);
+        }
+        
+        // Delete record from Firestore
+        function deleteRecord(collection, recordId) {
+            if (!currentUser) return;
+            
+            if (confirm('Tem certeza que deseja excluir este registro?')) {
+                showLoading();
+                db.collection("usuarios").doc(currentUser.id).collection(collection).doc(recordId).delete()
+                    .then(() => {
+                        hideLoading();
+                        alert('Registro excluído com sucesso!');
+                        
+                        // Reload the appropriate history
+                        switch(collection) {
+                            case 'peso':
+                                displayWeightHistory();
+                                break;
+                            case 'consultas':
+                                displayConsultHistory();
+                                break;
+                            case 'vacinas':
+                                displayVaccineHistory();
+                                break;
+                            case 'contracoes':
+                                displayContractionHistory();
+                                break;
+                            case 'diario':
+                                displayDiaryHistory();
+                                break;
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Erro ao excluir registro: ", error);
+                        hideLoading();
+                        alert('Erro ao excluir registro.');
+                    });
+            }
+        }
+        
+        // Delete lab exam from localStorage
+        function deleteLabExam(examId) {
+            if (!currentUser) return;
+            
+            if (confirm('Tem certeza que deseja excluir este exame?')) {
+                const exams = JSON.parse(localStorage.getItem(`labExams_${currentUser.id}`)) || [];
+                const updatedExams = exams.filter(exam => exam.id !== examId);
+                localStorage.setItem(`labExams_${currentUser.id}`, JSON.stringify(updatedExams));
+                displayLabExamsHistory();
+            }
+        }
+        
+        // Delete image exam from localStorage
+        function deleteImageExam(examId) {
+            if (!currentUser) return;
+            
+            if (confirm('Tem certeza que deseja excluir este exame?')) {
+                const exams = JSON.parse(localStorage.getItem(`imageExams_${currentUser.id}`)) || [];
+                const updatedExams = exams.filter(exam => exam.id !== examId);
+                localStorage.setItem(`imageExams_${currentUser.id}`, JSON.stringify(updatedExams));
+                displayImageExamsHistory();
+            }
         }
     </script>
 </body>
